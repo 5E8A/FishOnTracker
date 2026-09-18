@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FishOnTracker - Net Worth Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>FishOnTracker — Net Worth</h1>
+      <div class="version-badge" onclick="openChangelogModal()" title="Click to view release notes">
+        <span class="dot"></span>
+        <span>v1.0.0 • Changelog</span>
+      </div>
+    </div>
+
+    <!-- Net Worth Card -->
+    <div class="networth-card">
+      <div class="networth-label">Total Net Worth</div>
+      <div class="networth-value" id="totalNetWorth">$0</div>
+      <div class="category-breakdown" id="categoryBreakdown"></div>
+    </div>
+
+    <!-- Market Notice Disclaimer -->
+    <div class="price-disclaimer">
+      <span class="disclaimer-icon">⚠️</span>
+      <span><b>Notice:</b> Item prices are subject to market fluctuations and values are currently estimated. Some catalog items may still be missing and will be added in upcoming database updates.</span>
+    </div>
+
+    <!-- Top Action Bar -->
+    <div class="top-actions-bar">
+      <div class="action-group">
+        <button class="btn-action" onclick="exportInventory()">📥 Export</button>
+        <button class="btn-action" onclick="document.getElementById('fileInput').click()">📤 Import</button>
+        <button class="btn-action" onclick="openShareModal()">🖼️ Share Card</button>
+        <input type="file" id="fileInput" accept=".json,.txt" style="display: none;" onchange="importInventory(event)">
+      </div>
+      <button class="btn-clear" onclick="clearInventory()">Clear Inventory</button>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs" id="categoryTabs"></div>
+
+    <!-- Pet Creator Panel -->
+    <div id="petCreatorCard" class="creator-card" style="display: none;">
+      <div class="creator-title">🐾 Add Pet</div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Species</label>
+          <select id="petSpecies"></select>
+        </div>
+
+        <div class="form-group">
+          <label>Rarity</label>
+          <select id="petRarity" onchange="updatePetLivePreview()">
+            <option value="Common">Common (1x)</option>
+            <option value="Rare">Rare (2x)</option>
+            <option value="Epic">Epic (4x)</option>
+            <option value="Legendary">Legendary (8x)</option>
+            <option value="Mythical">Mythical (16x)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Rating (%)</label>
+          <input type="number" id="petRating" value="80" min="1" max="100" oninput="updatePetLivePreview()">
+        </div>
+      </div>
+
+      <div class="radio-row">
+        <label class="radio-label">
+          <input type="radio" name="petSpecialStat" value="none" checked onchange="updatePetLivePreview()">
+          None
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="petSpecialStat" value="luck" onchange="updatePetLivePreview()">
+          100% Luck
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="petSpecialStat" value="scale" onchange="updatePetLivePreview()">
+          100% Scale
+        </label>
+      </div>
+
+      <div class="creator-footer">
+        <div class="live-price-box">Estimated Value: <b id="petLivePrice">$0</b></div>
+        <button class="btn-add-custom" onclick="addCustomPet()">+ Add Pet to Inventory</button>
+      </div>
+    </div>
+
+    <!-- Armor Creator Panel -->
+    <div id="armorCreatorCard" class="creator-card" style="display: none;">
+      <div class="creator-title">🛡️ Add Armor Piece</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Climate</label>
+          <select id="armorClimate" onchange="updateArmorLivePreview()"></select>
+        </div>
+
+        <div class="form-group">
+          <label>Piece</label>
+          <select id="armorPiece" onchange="updateArmorLivePreview()">
+            <option value="Chestplate">Chestplate</option>
+            <option value="Leggings">Leggings</option>
+            <option value="Boots">Boots</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Rarity</label>
+          <select id="armorRarity" onchange="updateArmorLivePreview()">
+            <option value="Common">Common (0 shards)</option>
+            <option value="Rare">Rare (16 shards)</option>
+            <option value="Epic">Epic (64 shards)</option>
+            <option value="Legendary">Legendary (160 shards)</option>
+            <option value="Mythical">Mythical (416 shards)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Rating (%)</label>
+          <input type="number" id="armorRating" value="90" min="1" max="100" oninput="updateArmorLivePreview()">
+        </div>
+      </div>
+
+      <div class="form-group" style="flex: 1;">
+        <label>Infusion</label>
+        <select id="armorInfusion" onchange="updateArmorLivePreview()">
+          <option value="none">None</option>
+          <option value="albino">Albino Infusion (Capsule + 4 Albino Shards)</option>
+          <option value="melanistic">Melanistic Infusion (Capsule + 4 Melanistic Shards)</option>
+          <option value="trophy">Trophy Infusion (Capsule + 4 Trophy Shards)</option>
+        </select>
+      </div>
+
+      <div class="creator-footer">
+        <div class="live-price-box">Estimated Value: <b id="armorLivePrice">$0</b></div>
+        <button class="btn-add-custom" onclick="addCustomArmor()">+ Add Armor to Inventory</button>
+      </div>
+    </div>
+    <!-- Rod Parts Creator Panel -->
+    <div id="rodCreatorCard" class="creator-card" style="display: none;">
+      <div class="creator-title">🎣 Add Rod Part</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Part Type</label>
+          <select id="rodTypeSelect" onchange="onRodTypeChange()">
+            <option value="Pole">Pole</option>
+            <option value="Reel">Reel</option>
+            <option value="Line">Line</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Model / Base</label>
+          <select id="rodModelSelect" onchange="updateRodLivePreview()"></select>
+        </div>
+
+        <!-- Dynamic Tech Slot (Hidden for Line) -->
+        <div class="form-group" id="rodTechGroup">
+          <label id="rodTechLabel">Blank Tech</label>
+          <select id="rodTechSelect" onchange="updateRodLivePreview()"></select>
+        </div>
+      </div>
+
+      <div class="creator-footer">
+        <div class="live-price-box">Estimated Value: <b id="rodLivePrice">$0</b></div>
+        <button class="btn-add-custom" onclick="addCustomRodPart()">+ Add Rod Part to Inventory</button>
+      </div>
+    </div>
+
+    <!-- Catalog Search -->
+    <input type="text" id="searchInput" class="search-input" placeholder="Search for items to add...">
+
+    <!-- Items Grid -->
+    <div class="items-grid" id="itemsGrid"></div>
+
+    <!-- Inventory Search & Header -->
+    <div class="inventory-section-header">
+      <div class="inventory-section-title">Your Inventory</div>
+      <input type="text" id="invSearchInput" class="inventory-search-input" placeholder="🔍 Search in your inventory...">
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="toggleSort('name')">Item <span id="sort-icon-name"></span></th>
+            <th onclick="toggleSort('category')">Category <span id="sort-icon-category"></span></th>
+            <th onclick="toggleSort('price')">Unit Price <span id="sort-icon-price"></span></th>
+            <th onclick="toggleSort('qty')">Quantity <span id="sort-icon-qty"></span></th>
+            <th onclick="toggleSort('total')">Total <span id="sort-icon-total"></span></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="inventoryList"></tbody>
+      </table>
+      <div id="emptyState" class="empty-state">Inventory is empty. Select items above.</div>
+    </div>
+  </div>
+
+  <!-- Share Card Modal -->
+  <div id="shareModal" class="modal-backdrop" onclick="closeShareModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>🖼️ Generate Summary Card</h3>
+        <button class="modal-close-btn" onclick="closeShareModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Minecraft Nickname</label>
+            <input type="text" id="shareNick" placeholder="e.g. FisherPro" value="Player">
+          </div>
+          <div class="form-group">
+            <label>Account Level</label>
+            <input type="number" id="shareLevel" placeholder="e.g. 50" value="50" min="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Crew Name (Optional)</label>
+            <input type="text" id="shareCrew" placeholder="e.g. TideBreakers" value="No Crew">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+          <button class="btn-add-custom" style="flex: 1;" onclick="generateSummaryImage()">💾 Download PNG</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Changelog Modal -->
+  <div id="changelogModal" class="modal-backdrop" onclick="closeChangelogModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>📜 Version History</h3>
+        <button class="modal-close-btn" onclick="closeChangelogModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="changelogList"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="database.js"></script>
+  <script src="changelog.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

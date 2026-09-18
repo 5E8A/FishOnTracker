@@ -1,0 +1,260 @@
+// Species available for custom pets
+const PET_SPECIES = [
+  "Bullfrog", "Bear", "Fox", "Kangaroo", "Marsh Rabbit", "Duck",
+  "Sea Turtle", "Eagle", "Wolf", "Pelican", "Capybara", "Lynx",
+  "Shark", "Hippo", "Dolphin", "Sheep", "Koala"
+].sort();
+
+// Pet rarity multipliers
+const PET_RARITIES = {
+  "Common": 1,
+  "Rare": 2,
+  "Epic": 4,
+  "Legendary": 8,
+  "Mythical": 16
+};
+
+// Climates and shard pricing
+const ARMOR_CLIMATES = [
+  { name: "Subtropical", shardPrice: 3000 },
+  { name: "Subarctic", shardPrice: 7000 },
+  { name: "Semi-Arid", shardPrice: 7000 },
+  { name: "Savanna", shardPrice: 5000 },
+  { name: "Continental", shardPrice: 7000 },
+  { name: "Rainforest", shardPrice: 6500 },
+  { name: "Mediterranean", shardPrice: 7000 },
+  { name: "Oceanic", shardPrice: 6000 },
+  { name: "Arid", shardPrice: 5500 },
+  { name: "Monsoon", shardPrice: 7000 }
+];
+
+// Cumulative shards required from Common
+const ARMOR_SHARDS_CUMULATIVE = {
+  "Common": 0,
+  "Rare": 16,
+  "Epic": 64,
+  "Legendary": 160,
+  "Mythical": 416
+};
+
+// Dynamic Infusion Recipes (1 Capsule + 4 Shards)
+const INFUSION_RECIPES = {
+  none: { name: "None", capsuleId: null, shardId: null, shardCount: 0 },
+  albino: { name: "Albino Infusion", capsuleId: "infusion_capsule", shardId: "albino_shard", shardCount: 4 },
+  melanistic: { name: "Melanistic Infusion", capsuleId: "infusion_capsule", shardId: "melanistic_shard", shardCount: 4 },
+  trophy: { name: "Trophy Infusion", capsuleId: "infusion_capsule", shardId: "trophy_shard", shardCount: 4 }
+};
+
+// Standard Items Database
+const ITEMS_DB = [
+  // Pet Items
+  { id: "prospecting_amulet", name: "Prospecting Amulet", category: "Pet Items", price: 50000 },
+  { id: "ivory_amulet", name: "Ivory Amulet", category: "Pet Items", price: 900000 },
+  { id: "onyx_amulet", name: "Onyx Amulet", category: "Pet Items", price: 1800000 },
+  { id: "midas_amulet", name: "Midas Amulet", category: "Pet Items", price: 9000000 },
+  { id: "fabled_amulet", name: "Fabled Amulet", category: "Pet Items", price: 7500000 },
+  { id: "bigfoots_necklace", name: "BigFoot's Necklace", category: "Pet Items", price: 2250000 },
+  { id: "bigfoots_amulet", name: "BigFoot's Amulet", category: "Pet Items", price: 4300000 },
+  { id: "wades_amulet", name: "Wade's Amulet", category: "Pet Items", price: 2200000 },
+
+  // Crafting Components
+  { id: "albino_shard", name: "Albino Shard", category: "Crafting Components", price: 90000 },
+  { id: "melanistic_shard", name: "Melanistic Shard", category: "Crafting Components", price: 180000 },
+  { id: "trophy_shard", name: "Trophy Shard", category: "Crafting Components", price: 900000 },
+  { id: "fabled_shard", name: "Fabled Shard", category: "Crafting Components", price: 1500000 },
+  { id: "bigfoot_tooth", name: "Bigfoot Tooth", category: "Crafting Components", price: 450000 },
+  { id: "bigfoot_fur", name: "Bigfoot Fur", category: "Crafting Components", price: 350000 },
+  { id: "lightning_in_a_bottle", name: "Lightning in a Bottle", category: "Crafting Components", price: 90000 },
+  { id: "infusion_capsule", name: "Infusion Capsule", category: "Crafting Components", price: 350000 },
+  { id: "subtropical_shard", name: "Subtropical Shard", category: "Crafting Components", price: 3000 },
+  { id: "subarctic_shard", name: "Subarctic Shard", category: "Crafting Components", price: 7000 },
+  { id: "semi_arid_shard", name: "Semi-Arid Shard", category: "Crafting Components", price: 7000 },
+  { id: "savanna_shard", name: "Savanna Shard", category: "Crafting Components", price: 5000 },
+  { id: "continental_shard", name: "Continental Shard", category: "Crafting Components", price: 7000 },
+  { id: "rainforest_shard", name: "Rainforest Shard", category: "Crafting Components", price: 6500 },
+  { id: "mediterranean_shard", name: "Mediterranean Shard", category: "Crafting Components", price: 7000 },
+  { id: "oceanic_shard", name: "Oceanic Shard", category: "Crafting Components", price: 6000 },
+  { id: "arid_shard", name: "Arid Shard", category: "Crafting Components", price: 5500 },
+  { id: "monsoon_shard", name: "Monsoon Shard", category: "Crafting Components", price: 7000 },
+
+  // Consumables
+  { id: "standard_strongbox", name: "Standard Strongbox", category: "Consumables", price: 100000 },
+  { id: "standard_strongbox_2", name: "Standard Strongbox II", category: "Consumables", price: 80000 },
+  { id: "community_present_2025", name: "Community Present 2025", category: "Consumables", price: 300000 },
+  { id: "shark_week_2026_strongbox", name: "Shark Week 2026 Strongbox", category: "Consumables", price: 130000 },
+  { id: "common_chummer", name: "Common Chummer", category: "Consumables", price: 15000 },
+  { id: "rare_chummer", name: "Rare Chummer", category: "Consumables", price: 35000 },
+  { id: "epic_chummer", name: "Epic Chummer", category: "Consumables", price: 70000 },
+  { id: "legendary_chummer", name: "Legendary Chummer", category: "Consumables", price: 140000 },
+  { id: "mythical_chummer", name: "Mythical Chummer", category: "Consumables", price: 225000 },
+  { id: "standard_bait_package_common", name: "Standard Bait Package (Common)", category: "Consumables", price: 8000 },
+  { id: "standard_bait_package_rare", name: "Standard Bait Package (Rare)", category: "Consumables", price: 20000 },
+  { id: "standard_bait_package_epic", name: "Standard Bait Package (Epic)", category: "Consumables", price: 40000 },
+  { id: "advanced_bait_package_rare", name: "Advanced Bait Package (Rare)", category: "Consumables", price: 35000 },
+  { id: "advanced_bait_package_epic", name: "Advanced Bait Package (Epic)", category: "Consumables", price: 50000 },
+  { id: "advanced_bait_package_legendary", name: "Advanced Bait Package (Legendary)", category: "Consumables", price: 170000 },
+  { id: "advanced_bait_package_mythical", name: "Advanced Bait Package (Mythical)", category: "Consumables", price: 450000 },
+
+  // Baits — Common
+  { id: "grass_shrimp", name: "Grass Shrimp", category: "Baits", price: 200 },
+  { id: "pink_salmon_roe", name: "Pink Salmon Roe", category: "Baits", price: 200 },
+  { id: "worms", name: "Worms", category: "Baits", price: 200 },
+  { id: "zebra_mussels", name: "Zebra Mussels", category: "Baits", price: 255 },
+  { id: "dough_balls", name: "Dough Balls", category: "Baits", price: 200 },
+  { id: "small_cut_squid", name: "Small Cut Squid", category: "Baits", price: 200 },
+  { id: "sand_shrimp", name: "Sand Shrimp", category: "Baits", price: 200 },
+  { id: "sand_worm", name: "Sand Worm", category: "Baits", price: 200 },
+  { id: "bread", name: "Bread", category: "Baits", price: 275 },
+  { id: "sand_flea", name: "Sand Flea", category: "Baits", price: 200 },
+  { id: "clam", name: "Clam", category: "Baits", price: 200 },
+  { id: "scallop", name: "Scallop", category: "Baits", price: 200 },
+
+  // Baits — Rare
+  { id: "sand_eels", name: "Sand Eels", category: "Baits", price: 400 },
+  { id: "mussels", name: "Mussels", category: "Baits", price: 325 },
+  { id: "french_fry", name: "French Fry", category: "Baits", price: 350 },
+  { id: "chicken_scraps", name: "Chicken Scraps", category: "Baits", price: 450 },
+  { id: "herring_live_bait", name: "Herring Live Bait", category: "Baits", price: 400 },
+  { id: "cut_shad", name: "Cut Shad", category: "Baits", price: 400 },
+  { id: "minnow_live_bait", name: "Minnow Live Bait", category: "Baits", price: 400 },
+  { id: "white_shrimp", name: "White Shrimp", category: "Baits", price: 400 },
+  { id: "nightcrawler", name: "Nightcrawler", category: "Baits", price: 400 },
+  { id: "menhaden_live_bait", name: "Menhaden Live Bait", category: "Baits", price: 400 },
+  { id: "sweet_corn", name: "Sweet Corn", category: "Baits", price: 400 },
+  { id: "small_chunk_bonito_cutbait", name: "Small Chunk Of Bonito Cutbait", category: "Baits", price: 400 },
+  { id: "small_chunk_of_meat", name: "Small Chunk Of Meat", category: "Baits", price: 400 },
+  { id: "chicken_nugget", name: "Chicken Nugget", category: "Baits", price: 400 },
+  { id: "mullet_live_bait", name: "Mullet Live Bait", category: "Baits", price: 400 },
+  { id: "bardi_grub", name: "Bardi Grub", category: "Baits", price: 400 },
+  { id: "fiddler_crab", name: "Fiddler Crab", category: "Baits", price: 400 },
+  { id: "shiner_live_bait", name: "Shiner Live Bait", category: "Baits", price: 400 },
+  { id: "trout_dough", name: "Trout Dough", category: "Baits", price: 255 },
+  { id: "medium_cut_squid", name: "Medium Cut Squid", category: "Baits", price: 400 },
+  { id: "cut_octopus", name: "Cut Octopus", category: "Baits", price: 400 },
+  { id: "cut_piranha", name: "Cut Piranha", category: "Baits", price: 400 },
+  { id: "banana_chunks", name: "Banana Chunks", category: "Baits", price: 400 },
+  { id: "roostertail_fire_tiger", name: "Roostertail (Fire Tiger)", category: "Baits", price: 400 },
+  { id: "roostertail_white_chartreuse", name: "Roostertail (White Chartreuse)", category: "Baits", price: 400 },
+  { id: "roostertail_bubblegum", name: "Roostertail (Bubblegum)", category: "Baits", price: 400 },
+  { id: "crankbait_tiger_craw", name: "Crankbait (Tiger Craw)", category: "Baits", price: 400 },
+  { id: "crankbait_smokin_shad", name: "Crankbait (Smokin' Shad)", category: "Baits", price: 400 },
+
+  // Baits — Epic
+  { id: "cut_bream", name: "Cut Bream", category: "Baits", price: 1500 },
+  { id: "florida_crawfish", name: "Florida Crawfish", category: "Baits", price: 1500 },
+  { id: "cut_roach", name: "Cut Roach", category: "Baits", price: 1500 },
+  { id: "mozzarella_cube", name: "Mozzarella Cube", category: "Baits", price: 1500 },
+  { id: "cut_mullet", name: "Cut Mullet", category: "Baits", price: 1500 },
+  { id: "shad_live_bait", name: "Shad Live Bait", category: "Baits", price: 1500 },
+  { id: "rusty_crawfish", name: "Rusty Crawfish", category: "Baits", price: 1500 },
+  { id: "louisiana_crawfish", name: "Louisiana Crawfish", category: "Baits", price: 600 },
+  { id: "yabby_crawfish", name: "Yabby Crawfish", category: "Baits", price: 1500 },
+  { id: "pinfish_live_bait", name: "Pinfish Live Bait", category: "Baits", price: 1500 },
+  { id: "mackerel_live_bait", name: "Mackerel Live Bait", category: "Baits", price: 1500 },
+  { id: "suspending_jerkbait_fire_tiger", name: "Suspending Jerkbait (Fire Tiger)", category: "Baits", price: 1500 },
+  { id: "sardine_live_bait", name: "Sardine Live Bait", category: "Baits", price: 1500 },
+  { id: "jerkbait_blueback_herring", name: "Jerkbait (Blueback Herring)", category: "Baits", price: 1500 },
+  { id: "jerkbait_redhead", name: "Jerkbait (Redhead)", category: "Baits", price: 1500 },
+  { id: "frog_dark_rainforest", name: "Frog (Dark Rainforest)", category: "Baits", price: 1000 },
+  { id: "frog_leopard", name: "Frog (Leopard)", category: "Baits", price: 1000 },
+  { id: "bucktail_jig_dark_shad", name: "Bucktail Jig (Dark Shad)", category: "Baits", price: 1500 },
+  { id: "bucktail_jig_ghost", name: "Bucktail Jig (Ghost)", category: "Baits", price: 1500 },
+  { id: "bucktail_jig_chartreuse", name: "Bucktail Jig (Chartreuse)", category: "Baits", price: 1500 },
+  { id: "spinnerbait_epic", name: "Spinnerbait (Epic)", category: "Baits", price: 1500 },
+  { id: "crankbait_bluegill", name: "Crankbait (Bluegill)", category: "Baits", price: 1500 },
+  { id: "saltwater_spoon_silver", name: "Saltwater Spoon (Silver)", category: "Baits", price: 1500 },
+  { id: "saltwater_spoon_gold", name: "Saltwater Spoon (Gold)", category: "Baits", price: 1500 },
+  { id: "chicken_liver", name: "Chicken Liver", category: "Baits", price: 1500 },
+  { id: "nightcrawlers_epic", name: "Nightcrawlers", category: "Baits", price: 1500 },
+  { id: "cut_carp", name: "Cut Carp", category: "Baits", price: 1500 },
+
+  // Baits — Legendary
+  { id: "rotten_chicken", name: "Rotten Chicken", category: "Baits", price: 4000 },
+  { id: "spinnerbait_golden_shimmer", name: "Spinnerbait (Golden Shimmer)", category: "Baits", price: 4000 },
+  { id: "spinnerbait_white_shad", name: "Spinnerbait (White Shad)", category: "Baits", price: 4000 },
+  { id: "frog_rainforest_yellow", name: "Frog (Rainforest Yellow)", category: "Baits", price: 4000 },
+  { id: "murray_crawfish", name: "Murray Crawfish", category: "Baits", price: 4000 },
+  { id: "cownose_ray_cutbait", name: "Cownose Ray Cutbait", category: "Baits", price: 4000 },
+  { id: "glide_bait_rainbow_trout", name: "Glide Bait (Rainbow Trout)", category: "Baits", price: 4000 },
+
+  // Baits — Mythical
+  { id: "spinnerbait_golden_shimmer", name: "Spinnerbait (Golden Shimmer)", category: "Baits", price: 1500000 },
+  
+  // Skins
+  { id: "leatherback_pet", name: "Leatherback Pet", category: "Skins", price: 25000000 },
+  { id: "plushified_shark_pet", name: "Plushified Shark Pet", category: "Skins", price: 25000000 },
+  { id: "royal_capybara_pet", name: "Royal Capybara Pet", category: "Skins", price: 25000000 },
+  { id: "stormy_sheep_pet", name: "Stormy Sheep Pet", category: "Skins", price: 25000000 },
+  { id: "robot_bullfrog_pet", name: "Robot Bullfrog Pet", category: "Skins", price: 25000000 },
+
+];
+
+// Rod Parts Configuration
+const ROD_PART_TYPES = ["Pole", "Reel", "Line"];
+
+// Rod Blank Technologies (for Poles)
+const ROD_BLANK_TECHS = [
+  { name: "None", price: 0 },
+  { name: "S-Glass Blank", price: 50000 },
+  { name: "Graphite Fiberglass Blank", price: 100000 },
+  { name: "IM6 Graphite Blank", price: 200000 },
+  { name: "IM7 Graphite Blank", price: 350000 },
+  { name: "IM8 Graphite Blank", price: 500000 },
+  { name: "Toray T800 Blank", price: 800000 },
+  { name: "Toray T1100G Blank", price: 1200000 }
+];
+
+// Gear System Technologies (for Reels)
+const GEAR_SYSTEM_TECHS = [
+  { name: "None", price: 0 },
+  { name: "Cast Brass Gears", price: 50000 },
+  { name: "Machined Brass Gears", price: 100000 },
+  { name: "Stainless Steel Gears", price: 200000 },
+  { name: "Cast Aluminium Gears", price: 350000 },
+  { name: "Cold Forged Aluminium Gears", price: 500000 },
+  { name: "Duralumin Gears", price: 800000 },
+  { name: "Micro Precision Gears", price: 1200000 }
+];
+
+// Base items list with customizable default prices
+const BASE_ROD_ITEMS = {
+  Pole: [
+    { name: "Standard Cast Pole", basePrice: 5000 },
+    { name: "Standard MX Cast Pole", basePrice: 15000 },
+    { name: "Standard LX Cast Pole", basePrice: 30000 },
+    { name: "Branwell's Badwater Pole", basePrice: 75000 },
+    { name: "Branwell's Badwater II Pole", basePrice: 225000 },
+    { name: "Branwell's Badwater III Pole", basePrice: 500000 },
+    { name: "Branwell's Badwater X Pole", basePrice: 1500000 },
+    { name: "Gulftide Surf Pole", basePrice: 75000 },
+    { name: "Gulftide Surf II Pole", basePrice: 225000 },
+    { name: "Gulftide Surf III Pole", basePrice: 500000 },
+    { name: "Gulftide Surf X Pole", basePrice: 1500000 },
+  ],
+  Reel: [
+    { name: "Standard Cast Reel", basePrice: 5000 },
+    { name: "Standard MX Cast Reel", basePrice: 15000 },
+    { name: "Standard LX Cast Reel", basePrice: 30000 },
+    { name: "Branwell's Badwater Reel", basePrice: 75000 },
+    { name: "Branwell's Badwater II Reel", basePrice: 225000 },
+    { name: "Branwell's Badwater III Reel", basePrice: 500000 },
+    { name: "Branwell's Badwater X Reel", basePrice: 1500000 },
+    { name: "Gulftide Surf Reel", basePrice: 75000 },
+    { name: "Gulftide Surf II Reel", basePrice: 225000 },
+    { name: "Gulftide Surf III Reel", basePrice: 500000 },
+    { name: "Gulftide Surf X Reel", basePrice: 1500000 },
+  ],
+  Line: [
+    { name: "Weak Flourocarbon Line", basePrice: 5000 },
+    { name: "Sturdy Flourocarbon Line", basePrice: 20000 },
+    { name: "Strong Flourocarbon Line", basePrice: 40000 },
+    { name: "Branwell's Freshwater Line", basePrice: 20000 },
+    { name: "Branwell's Freshwater II Line", basePrice: 50000 },
+    { name: "Branwell's Freshwater III Line", basePrice: 250000 },
+    { name: "Henshaw's Saltwater Line", basePrice: 20000 },
+    { name: "Henshaw's Saltwater II Line", basePrice: 50000 },
+    { name: "Henshaw's Saltwater III Line", basePrice: 250000 },
+    { name: "Wade's Giant Line", basePrice: 325000 },
+    { name: "Henshaw's Shark Line", basePrice: 325000 },
+  ]
+};
