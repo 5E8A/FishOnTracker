@@ -731,7 +731,7 @@ function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.0", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.1", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider
