@@ -1,6 +1,13 @@
 // changelog.js
 const CHANGELOG_DATA = [
   {
+    version: "v1.0.1",
+    date: "Official Release",
+    changes: [
+      "Fixed Rod Blank and Gear System prices"
+    ]
+  },
+  {
     version: "v1.0.0",
     date: "Official Release",
     changes: [

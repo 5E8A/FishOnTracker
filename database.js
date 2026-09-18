@@ -195,25 +195,25 @@ const ROD_PART_TYPES = ["Pole", "Reel", "Line"];
 // Rod Blank Technologies (for Poles)
 const ROD_BLANK_TECHS = [
   { name: "None", price: 0 },
-  { name: "S-Glass Blank", price: 50000 },
+  { name: "S-Glass Blank", price: 25000 },
   { name: "Graphite Fiberglass Blank", price: 100000 },
-  { name: "IM6 Graphite Blank", price: 200000 },
-  { name: "IM7 Graphite Blank", price: 350000 },
-  { name: "IM8 Graphite Blank", price: 500000 },
-  { name: "Toray T800 Blank", price: 800000 },
-  { name: "Toray T1100G Blank", price: 1200000 }
+  { name: "IM6 Graphite Blank", price: 250000 },
+  { name: "IM7 Graphite Blank", price: 600000 },
+  { name: "IM8 Graphite Blank", price: 1350000 },
+  { name: "Toray T800 Blank", price: 4100000 },
+  { name: "Toray T1100G Blank", price: 7700000 },
 ];
 
 // Gear System Technologies (for Reels)
 const GEAR_SYSTEM_TECHS = [
   { name: "None", price: 0 },
-  { name: "Cast Brass Gears", price: 50000 },
-  { name: "Machined Brass Gears", price: 100000 },
-  { name: "Stainless Steel Gears", price: 200000 },
-  { name: "Cast Aluminium Gears", price: 350000 },
-  { name: "Cold Forged Aluminium Gears", price: 500000 },
-  { name: "Duralumin Gears", price: 800000 },
-  { name: "Micro Precision Gears", price: 1200000 }
+  { name: "Cast Brass Gears", price: 10000 },
+  { name: "Machined Brass Gears", price: 750000 },
+  { name: "Stainless Steel Gears", price: 150000 },
+  { name: "Cast Aluminium Gears", price: 400000 },
+  { name: "Cold Forged Aluminium Gears", price: 1250000 },
+  { name: "Duralumin Gears", price: 2000000 },
+  { name: "Micro Precision Gears", price: 5000000 },
 ];
 
 // Base items list with customizable default prices
