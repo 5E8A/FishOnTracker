@@ -35,18 +35,22 @@ body {
 .version-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  margin-top: 0;
-  padding: 3px 10px;
+  height: 28px;
+  padding: 0 12px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 20px;
   font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  text-decoration: none !important; /* Usuwa niebieskie/fioletowe podkreślenie linku */
   white-space: nowrap;
+  line-height: 1;
 }
 
 .version-badge:hover {
@@ -55,6 +59,7 @@ body {
   background: var(--bg-input);
   transform: translateY(-1px);
 }
+
 .version-badge .dot {
   width: 7px;
   height: 7px;
@@ -694,21 +699,16 @@ tr:last-child td { border-bottom: none; }
 
 /* GitHub Badge */
 .github-badge {
-  text-decoration: none;
   color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 
 .github-badge:hover {
-  border-color: #f0fdf4;
   color: #f0fdf4;
-  background: var(--bg-input);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .github-icon {
-  flex-shrink: 0;
+  display: block;
   fill: currentColor;
   transition: transform 0.2s ease;
 }
@@ -718,10 +718,9 @@ tr:last-child td { border-bottom: none; }
 }
 
 .header-badges {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  flex-wrap: nowrap;
-  margin-top: 6px;
+  margin-top: 8px;
 }
