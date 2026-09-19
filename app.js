@@ -683,6 +683,15 @@ function generateSummaryImage() {
   const level = document.getElementById("shareLevel").value.trim() || "1";
   const crew = document.getElementById("shareCrew").value.trim() || "No Crew";
 
+  // Format MM/DD/Year
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const yyyy = now.getFullYear();
+
+  const dateDisplay = `${mm}/${dd}/${yyyy}`; // Na obrazie: MM/DD/Year (np. 09/20/2026)
+  const dateFile = `${mm}-${dd}-${yyyy}`;    // W nazwie pliku: MM-DD-Year (np. 09-20-2026)
+
   let totalWorth = 0;
   let totalItemsCount = 0;
   const categoryTotals = {};
@@ -747,11 +756,11 @@ function generateSummaryImage() {
   ctx.font = "14px 'Segoe UI', sans-serif";
   ctx.fillText("⚓ Crew: " + crew, 40, 84);
 
-  // App version in corner
+  // Version info in top-right corner
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.2", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.3", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider
@@ -824,9 +833,17 @@ function generateSummaryImage() {
     ctx.fillText(formatMoney(val), x + 14, y + 34);
   });
 
-  // 7. Auto Download
+  // 7. Data w prawym dolnym rogu (MM/DD/Year)
+  ctx.textAlign = "right";
+  ctx.fillStyle = "#86efac66";
+  ctx.font = "12px 'Segoe UI', sans-serif";
+  ctx.fillText(`Generated: ${dateDisplay}`, width - 40, height - 28);
+  ctx.textAlign = "left";
+
+  // 8. Pobranie pliku z nazwą fot_[nickname]_[MM-DD-YYYY].png
+  const safeNick = nick.toLowerCase().replace(/[^a-z0-9_-]/gi, '_');
   const link = document.createElement("a");
-  link.download = `fishontracker_${nick.toLowerCase()}.png`;
+  link.download = `fot_${safeNick}_${dateFile}.png`;
   link.href = canvas.toDataURL("image/png");
   link.click();
   link.remove();
@@ -840,10 +857,18 @@ function exportInventory() {
     alert("Your inventory is empty.");
     return;
   }
+
+  // Format daty MM-DD-Year
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const yyyy = now.getFullYear();
+  const dateFile = `${mm}-${dd}-${yyyy}`;
+
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(userInventory, null, 2));
   const downloadAnchor = document.createElement("a");
   downloadAnchor.setAttribute("href", dataStr);
-  downloadAnchor.setAttribute("download", `fishon_eq_${new Date().toISOString().slice(0, 10)}.json`);
+  downloadAnchor.setAttribute("download", `fot_eq_${dateFile}.json`);
   document.body.appendChild(downloadAnchor);
   downloadAnchor.click();
   downloadAnchor.remove();
@@ -887,6 +912,29 @@ if (invSearchEl) {
     inventorySearchQuery = e.target.value;
     renderInventory();
   });
+}
+
+// Modal Price Changes Controls
+function openPriceChangesModal() {
+  document.getElementById("priceChangesModal").style.display = "flex";
+}
+
+function closePriceChangesModal(event) {
+  if (!event || event.target === document.getElementById("priceChangesModal") || event.target.classList.contains('modal-close-btn')) {
+    document.getElementById("priceChangesModal").style.display = "none";
+  }
+}
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    document.getElementById("changelogModal").style.display = "none";
+    document.getElementById("shareModal").style.display = "none";
+    document.getElementById("priceChangesModal").style.display = "none";
+  }
+});
+
+if (typeof renderPriceChanges === "function") {
+  renderPriceChanges();
 }
 
 // App Initialization

@@ -32,12 +32,11 @@ body {
 .header { text-align: center; }
 .header h1 { font-size: 1.8rem; font-weight: 800; }
 
-/* Version & Changelog badge */
 .version-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 0;
   padding: 3px 10px;
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -47,7 +46,9 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
+  white-space: nowrap;
 }
+
 .version-badge:hover {
   color: var(--accent);
   border-color: var(--accent);
@@ -607,4 +608,120 @@ tr:last-child td { border-bottom: none; }
 .radio-label:has(input:disabled) {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* Price Updates Styling */
+.price-badge:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.price-dot {
+  background: #38bdf8 !important;
+  box-shadow: 0 0 8px #38bdf8 !important;
+}
+
+.price-entry {
+  border-left: 2px solid #38bdf8 !important;
+}
+
+.price-entry h4 {
+  color: #38bdf8 !important;
+}
+
+.price-change-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(26, 40, 32, 0.4);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.82rem;
+}
+
+.price-item-name {
+  color: #f0fdf4;
+  font-weight: 500;
+}
+
+.price-item-values {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+}
+
+.price-item-values .old-val {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.price-item-values .arrow {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.price-item-values .new-val {
+  color: #fff;
+  font-weight: 700;
+}
+
+.diff-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: bold;
+}
+
+.price-up {
+  color: var(--success);
+  background: rgba(74, 222, 128, 0.15);
+}
+
+.price-down {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* GitHub Badge */
+.github-badge {
+  text-decoration: none;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.github-badge:hover {
+  border-color: #f0fdf4;
+  color: #f0fdf4;
+  background: var(--bg-input);
+}
+
+.github-icon {
+  flex-shrink: 0;
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.github-badge:hover .github-icon {
+  transform: scale(1.1);
+}
+
+.header-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  margin-top: 6px;
 }

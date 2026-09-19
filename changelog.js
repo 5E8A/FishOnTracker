@@ -1,6 +1,16 @@
 // changelog.js
 const CHANGELOG_DATA = [
   {
+    version: "v1.0.3",
+    date: "Official Release",
+    changes: [
+      "Added price change tracking — view historical price adjustments",
+      "Added generation date stamp to Share Cards",
+      "Updated file naming to Share Cards and Inventory JSON files",
+      "Added quick-access GitHub repository link to header navigation"
+    ]
+  },
+  {
     version: "v1.0.2",
     date: "Official Release",
     changes: [
