@@ -89,7 +89,7 @@ function getArmorBaseValue(rating) {
 // Dynamic Infusion Pricing (1 Infusion Capsule + 4 Shards)
 function getInfusionPrice(infusionKey) {
   if (typeof INFUSION_RECIPES === "undefined") {
-    const fallbackPrices = { albino: 750000, melanistic: 1150000, trophy: 4350000 };
+    const fallbackPrices = { albino: 710000, melanistic: 1070000, trophy: 3950000 };
     return fallbackPrices[infusionKey] || 0;
   }
   const recipe = INFUSION_RECIPES[infusionKey];
@@ -115,21 +115,39 @@ function calculateArmorPrice(climateName, rarity, rating, infusion) {
 }
 
 // Rod Parts pricing logic
-function calculateRodPrice() {
-  const modelSel = document.getElementById("rodModelSelect");
-  const selectedModel = modelSel ? modelSel.options[modelSel.selectedIndex] : null;
-  const basePrice = selectedModel ? parseInt(selectedModel.dataset.price, 10) || 0 : 0;
+function calculateRodPrice(type, model, tech) {
+  const baseItems = BASE_ROD_ITEMS[type] || [];
+  const found = baseItems.find(i => i.name === model);
+  const basePrice = found ? found.basePrice : 0;
 
-  const type = document.getElementById("rodTypeSelect").value;
   let techPrice = 0;
-
-  if (type !== "Line") {
-    const techSel = document.getElementById("rodTechSelect");
-    const selectedTech = techSel ? techSel.options[techSel.selectedIndex] : null;
-    if (selectedTech) techPrice = parseInt(selectedTech.dataset.price, 10) || 0;
+  if (type === "Pole") {
+    const t = ROD_BLANK_TECHS.find(x => x.name === tech);
+    if (t) techPrice = t.price;
+  } else if (type === "Reel") {
+    const g = GEAR_SYSTEM_TECHS.find(x => x.name === tech);
+    if (g) techPrice = g.price;
   }
 
   return basePrice + techPrice;
+}
+
+// Master Dynamic Price Resolver
+function resolveItemPrice(entry) {
+  if (!entry.isCustomItem) {
+    const dbItem = ITEMS_DB.find(i => i.id === entry.id);
+    return dbItem ? dbItem.price : (entry.price || 0);
+  }
+
+  if (entry.customType === "pet") {
+    return calculatePetPrice(entry.rarity, entry.rating, entry.specialStat);
+  } else if (entry.customType === "armor") {
+    return calculateArmorPrice(entry.climate, entry.rarity, entry.rating, entry.infusion);
+  } else if (entry.customType === "rod") {
+    return calculateRodPrice(entry.partType, entry.model, entry.tech);
+  }
+
+  return entry.price || 0;
 }
 
 // Quantity and Currency Parsers
@@ -211,7 +229,7 @@ function initDropdowns() {
     ARMOR_CLIMATES.forEach(c => {
       const opt = document.createElement("option");
       opt.value = c.name;
-      opt.textContent = `${c.name} (${formatMoney(c.shardPrice)}/shard)`;
+      opt.textContent = c.name;
       armorSel.appendChild(opt);
     });
   }
@@ -248,7 +266,7 @@ function switchView() {
   }
 }
 
-// Live Preview & Add Pet (with 100% Rating Lock)
+// Live Preview & Add Pet
 function updatePetLivePreview() {
   const rEl = document.getElementById("petRarity");
   const ratEl = document.getElementById("petRating");
@@ -282,8 +300,6 @@ function addCustomPet() {
   const sEl = document.querySelector('input[name="petSpecialStat"]:checked');
   const specialStat = (rating >= 100) ? "none" : (sEl ? sEl.value : "none");
 
-  const unitPrice = calculatePetPrice(rarity, rating, specialStat);
-
   let tagStr = "";
   if (rating < 100) {
     if (specialStat === "luck") tagStr = " [100% Luck]";
@@ -293,9 +309,13 @@ function addCustomPet() {
   userInventory.push({
     id: `pet_${Date.now()}`,
     isCustomItem: true,
+    customType: "pet",
+    species,
+    rarity,
+    rating,
+    specialStat,
     name: `${rarity} ${species} (${rating}%)${tagStr}`,
     category: "Pets",
-    price: unitPrice,
     qty: 1
   });
 
@@ -321,8 +341,6 @@ function addCustomArmor() {
   const rating = parseFloat(document.getElementById("armorRating").value) || 0;
   const infusion = document.getElementById("armorInfusion").value;
 
-  const unitPrice = calculateArmorPrice(climate, rarity, rating, infusion);
-
   let infStr = "";
   if (infusion === "albino") infStr = " [Albino Infusion]";
   if (infusion === "melanistic") infStr = " [Melanistic Infusion]";
@@ -331,9 +349,14 @@ function addCustomArmor() {
   userInventory.push({
     id: `armor_${Date.now()}`,
     isCustomItem: true,
+    customType: "armor",
+    climate,
+    piece,
+    rarity,
+    rating,
+    infusion,
     name: `${rarity} ${climate} ${piece} (${rating}%)${infStr}`,
     category: "Armor",
-    price: unitPrice,
     qty: 1
   });
 
@@ -354,7 +377,6 @@ function onRodTypeChange() {
   (BASE_ROD_ITEMS[type] || []).forEach(item => {
     const opt = document.createElement("option");
     opt.value = item.name;
-    opt.dataset.price = item.basePrice;
     opt.textContent = `${item.name} (${formatMoney(item.basePrice)})`;
     modelSel.appendChild(opt);
   });
@@ -389,29 +411,33 @@ function onRodTypeChange() {
 }
 
 function updateRodLivePreview() {
-  const pEl = document.getElementById("rodLivePrice");
-  if (pEl) pEl.textContent = formatMoney(calculateRodPrice());
+  const type = document.getElementById("rodTypeSelect").value;
+  const model = document.getElementById("rodModelSelect").value;
+  const tech = (type !== "Line") ? document.getElementById("rodTechSelect").value : "None";
+
+  const price = calculateRodPrice(type, model, tech);
+  document.getElementById("rodLivePrice").textContent = formatMoney(price);
 }
 
 function addCustomRodPart() {
   const type = document.getElementById("rodTypeSelect").value;
   const model = document.getElementById("rodModelSelect").value;
-  const unitPrice = calculateRodPrice();
+  const tech = (type !== "Line") ? document.getElementById("rodTechSelect").value : "None";
 
   let name = model;
-  if (type !== "Line") {
-    const tech = document.getElementById("rodTechSelect").value;
-    if (tech && tech !== "None") {
-      name += ` [${tech}]`;
-    }
+  if (type !== "Line" && tech && tech !== "None") {
+    name += ` [${tech}]`;
   }
 
   userInventory.push({
     id: `rod_${Date.now()}`,
     isCustomItem: true,
-    name: name,
+    customType: "rod",
+    partType: type,
+    model,
+    tech,
+    name,
     category: "Rod Parts",
-    price: unitPrice,
     qty: 1
   });
 
@@ -497,8 +523,7 @@ function updateItemQty(index, newQtyStr) {
 }
 
 function stepItemQty(index, delta, event) {
-  const isShift = event && event.shiftKey;
-  const step = isShift ? 64 : 1;
+  const step = (event && event.shiftKey) ? 64 : 1;
   const current = userInventory[index].qty || 1;
   const next = current + (delta * step);
 
@@ -541,15 +566,14 @@ function renderInventory() {
   const enriched = userInventory.map((entry, originalIndex) => {
     let name = entry.name;
     let category = entry.category;
-    let price = entry.price;
 
     if (!entry.isCustomItem) {
-      const dbItem = ITEMS_DB.find(i => i.id === entry.id) || { name: entry.id, category: "Other", price: 0 };
+      const dbItem = ITEMS_DB.find(i => i.id === entry.id) || { name: entry.id, category: "Other" };
       name = dbItem.name;
       category = dbItem.category;
-      price = dbItem.price;
     }
 
+    const price = resolveItemPrice(entry);
     const subtotal = price * entry.qty;
     totalWorth += subtotal;
     categoryTotals[category] = (categoryTotals[category] || 0) + subtotal;
@@ -664,17 +688,13 @@ function generateSummaryImage() {
   const categoryTotals = {};
 
   userInventory.forEach(entry => {
-    let price = entry.price || 0;
     let category = entry.category || "Other";
-
     if (!entry.isCustomItem) {
       const dbItem = ITEMS_DB.find(i => i.id === entry.id);
-      if (dbItem) {
-        price = dbItem.price;
-        category = dbItem.category;
-      }
+      if (dbItem) category = dbItem.category;
     }
 
+    const price = resolveItemPrice(entry);
     const sub = price * entry.qty;
     totalWorth += sub;
     totalItemsCount += entry.qty;
@@ -731,7 +751,7 @@ function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.1", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.2", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider

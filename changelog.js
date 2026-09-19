@@ -1,6 +1,15 @@
 // changelog.js
 const CHANGELOG_DATA = [
   {
+    version: "v1.0.2",
+    date: "Official Release",
+    changes: [
+      "Dynamic price synchronization — custom Pets, Armor, and Rod Parts",
+      "Added missing Baits to the database",
+      "Simplified display labels for Armor climates, Armor rarities, and Pet rarities"
+    ]
+  },
+  {
     version: "v1.0.1",
     date: "Official Release",
     changes: [
