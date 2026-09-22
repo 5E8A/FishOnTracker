@@ -1,5 +1,17 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+    {
+    date: "2026-09-22",
+    tag: "Price Update",
+    changes: [
+        { name: "Frog (Rainforest Yellow)", oldPrice: 4000, newPrice: 2500 },
+        { name: "Cut Mullet", oldPrice: 1500, newPrice: 1200 },
+        { name: "Shad Live Bait", oldPrice: 1500, newPrice: 1000 },
+        { name: "Bardi Grub", oldPrice: 400, newPrice: 300 },
+        { name: "Cut Shad", oldPrice: 400, newPrice: 350 },
+        { name: "Advanced Bait Package (Epic)", oldPrice: 50000, newPrice: 45000 },
+    ]
+  },
   {
     date: "2026-09-20",
     tag: "Price Update",
