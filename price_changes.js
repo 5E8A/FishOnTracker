@@ -1,6 +1,20 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
     {
+    date: "2026-09-23",
+    tag: "Price Update",
+    changes: [
+        { name: "Spinnerbait (Chartreuse)", oldPrice: 1500, newPrice: 2500 },
+        { name: "Prospecting Amulet", oldPrice: 50000, newPrice: 100000 },
+        { name: "Salmon Head", oldPrice: 4000, newPrice: 5000 },
+        { name: "Cownose Ray Cutbait", oldPrice: 4000, newPrice: 6000 },
+        { name: "Chicken Scraps", oldPrice: 450, newPrice: 350 },
+        { name: "Subarctic Shard", oldPrice: 7000, newPrice: 6000 },
+        { name: "Fabled Shard", oldPrice: 1500000, newPrice: 1200000 },
+        { name: "Fabled Amulet", oldPrice: 7500000, newPrice: 6000000 },
+    ]
+    },
+    {
     date: "2026-09-22",
     tag: "Price Update",
     changes: [

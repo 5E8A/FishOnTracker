@@ -180,15 +180,19 @@ function formatQuantity(qty, category) {
 }
 
 function formatMoney(amount) {
-  if (amount >= 1000000) {
-    const val = amount / 1000000;
-    return "$" + (Number.isInteger(val) ? val : val.toFixed(2)) + "M";
+  const isNegative = amount < 0;
+  const abs = Math.abs(amount);
+  const sign = isNegative ? "-" : "";
+
+  if (abs >= 1000000) {
+    const val = abs / 1000000;
+    return sign + "$" + (Number.isInteger(val) ? val : val.toFixed(2)) + "M";
   }
-  if (amount >= 1000) {
-    const val = amount / 1000;
-    return "$" + (Number.isInteger(val) ? val : val.toFixed(1)) + "k";
+  if (abs >= 1000) {
+    const val = abs / 1000;
+    return sign + "$" + (Number.isInteger(val) ? val : val.toFixed(1)) + "k";
   }
-  return "$" + amount.toLocaleString("en-US");
+  return sign + "$" + abs.toLocaleString("en-US");
 }
 
 // Tabs & Navigation
