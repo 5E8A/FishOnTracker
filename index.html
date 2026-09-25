@@ -14,7 +14,7 @@
       <div class="header-badges">
         <div class="version-badge" onclick="openChangelogModal()" title="Click to view release notes">
           <span class="dot"></span>
-          <span>v1.0.3 • Changelog</span>
+          <span>v1.0.4 • Changelog</span>
         </div>
         <div class="version-badge price-badge" onclick="openPriceChangesModal()" title="Click to view price updates">
           <span class="dot price-dot"></span>
@@ -43,15 +43,16 @@
     </div>
 
     <!-- Top Action Bar -->
-    <div class="top-actions-bar">
-      <div class="action-group">
-        <button class="btn-action" onclick="exportInventory()">📥 Export</button>
-        <button class="btn-action" onclick="document.getElementById('fileInput').click()">📤 Import</button>
-        <button class="btn-action" onclick="openShareModal()">🖼️ Share Card</button>
-        <input type="file" id="fileInput" accept=".json,.txt" style="display: none;" onchange="importInventory(event)">
-      </div>
-      <button class="btn-clear" onclick="clearInventory()">Clear Inventory</button>
-    </div>
+<div class="top-actions-bar">
+  <div class="action-group">
+    <button class="btn-action" onclick="exportInventory()">📥 Export</button>
+    <button class="btn-action" onclick="document.getElementById('fileInput').click()">📤 Import</button>
+    <button class="btn-action" id="btn-quick-paste" onclick="quickPasteInventory()">📋 Quick Paste</button>
+    <button class="btn-action" onclick="openShareModal()">🖼️ Share Card</button>
+    <input type="file" id="fileInput" accept=".json,.txt" style="display: none;" onchange="importInventory(event)">
+  </div>
+  <button class="btn-clear" onclick="clearInventory()">Clear Inventory</button>
+</div>
 
     <!-- Category Tabs -->
     <div class="category-tabs" id="categoryTabs"></div>
@@ -198,6 +199,12 @@
     <div class="inventory-section-header">
       <div class="inventory-section-title">Your Inventory</div>
       <input type="text" id="invSearchInput" class="inventory-search-input" placeholder="🔍 Search in your inventory...">
+    </div>
+
+    <!-- Unknown Items Alert Banner -->
+    <div id="unknownItemsAlert" class="unknown-alert" style="display: none;">
+      <span class="unknown-alert-icon">⚠️</span>
+      <span>Found <strong id="unknownCount">0</strong> unknown item(s)</span>
     </div>
 
     <!-- Inventory Table -->

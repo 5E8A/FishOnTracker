@@ -1,5 +1,22 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+        {
+    date: "2026-09-25",
+    tag: "Price Update",
+    changes: [
+        { name: "Marlin Lure (Blue)", oldPrice: 4000, newPrice: 8000 },
+        { name: "Marlin Lure (Mini Mahi)", oldPrice: 4000, newPrice: 8000 },
+        { name: "Marlin Lure (Purple)", oldPrice: 4000, newPrice: 8000 },
+        { name: "Cut Roach", oldPrice: 1500, newPrice: 3500 },
+        { name: "Popper (Volcano)", oldPrice: 4000, newPrice: 5000 },
+        { name: "Popper (Ghost)", oldPrice: 4000, newPrice: 6000 },
+        { name: "Menhaden Live Bait", oldPrice: 400, newPrice: 550 },
+        { name: "Spinnerbait (Lime)", oldPrice: 4000, newPrice: 2500 },
+        { name: "Frog (Rainforest Yellow)", oldPrice: 2500, newPrice: 2000 },
+        { name: "Mythical Chummer", oldPrice: 225000, newPrice: 200000 },
+        { name: "Cut Mullet", oldPrice: 1200, newPrice: 1000 },
+    ]
+    },
     {
     date: "2026-09-23",
     tag: "Price Update",

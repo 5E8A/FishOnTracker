@@ -1,5 +1,15 @@
 // changelog.js
 const CHANGELOG_DATA = [
+    {
+    version: "v1.0.4",
+    date: "Official Release",
+    changes: [
+      "Added Quick Paste button for JSON file, for future FishOnTracker Mod",
+      "Added missing Poles and Reels to the database",
+      "Added missing database item indicators",
+      "Changed a few internal item IDs"
+    ]
+  },
   {
     version: "v1.0.3",
     date: "Official Release",

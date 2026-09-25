@@ -31,6 +31,8 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     document.getElementById("changelogModal").style.display = "none";
     document.getElementById("shareModal").style.display = "none";
+    const priceModal = document.getElementById("priceChangesModal");
+    if (priceModal) priceModal.style.display = "none";
   }
 });
 
@@ -557,24 +559,39 @@ function toggleSort(field) {
 }
 
 // Main Inventory Rendering
+// Main Inventory Rendering
 function renderInventory() {
   localStorage.setItem("fishon_inventory", JSON.stringify(userInventory));
 
   const tbody = document.getElementById("inventoryList");
   const emptyState = document.getElementById("emptyState");
+  const unknownAlert = document.getElementById("unknownItemsAlert");
+  const unknownCountEl = document.getElementById("unknownCount");
   tbody.innerHTML = "";
 
   let totalWorth = 0;
+  let unknownItemsCount = 0;
   const categoryTotals = {};
 
   const enriched = userInventory.map((entry, originalIndex) => {
     let name = entry.name;
     let category = entry.category;
+    let isUnknown = false;
 
     if (!entry.isCustomItem) {
-      const dbItem = ITEMS_DB.find(i => i.id === entry.id) || { name: entry.id, category: "Other" };
-      name = dbItem.name;
-      category = dbItem.category;
+      const dbItem = ITEMS_DB.find(i => i.id === entry.id);
+      if (dbItem) {
+        name = dbItem.name;
+        category = dbItem.category;
+      } else {
+        name = entry.name || entry.id;
+        category = "Unknown";
+        isUnknown = true;
+      }
+    }
+
+    if (isUnknown) {
+      unknownItemsCount++;
     }
 
     const price = resolveItemPrice(entry);
@@ -582,8 +599,18 @@ function renderInventory() {
     totalWorth += subtotal;
     categoryTotals[category] = (categoryTotals[category] || 0) + subtotal;
 
-    return { originalIndex, name, category, price, qty: entry.qty, subtotal };
+    return { originalIndex, name, category, price, qty: entry.qty, subtotal, isUnknown };
   });
+
+  // Aktualizacja bannera ostrzegawczego nad tabelą
+  if (unknownAlert && unknownCountEl) {
+    if (unknownItemsCount > 0) {
+      unknownCountEl.textContent = unknownItemsCount;
+      unknownAlert.style.display = "flex";
+    } else {
+      unknownAlert.style.display = "none";
+    }
+  }
 
   const filteredInventory = enriched.filter(entry => {
     const query = inventorySearchQuery.toLowerCase();
@@ -643,9 +670,13 @@ function renderInventory() {
       stackHint = `<span class="qty-stack-hint">${rem > 0 ? `(${s}s+${rem})` : `(${s}s)`}</span>`;
     }
 
+    const warningBadge = entry.isUnknown
+      ? `<span class="warning-icon" title="Item ID '${entry.name}' is missing in database!">⚠️</span>`
+      : "";
+
     const row = document.createElement("tr");
     row.innerHTML = `
-      <td><b>${entry.name}</b></td>
+      <td><b>${entry.name}</b>${warningBadge}</td>
       <td><span class="badge" style="margin-left: 0;">${entry.category}</span></td>
       <td>${formatMoney(entry.price)}</td>
       <td>
@@ -687,14 +718,13 @@ function generateSummaryImage() {
   const level = document.getElementById("shareLevel").value.trim() || "1";
   const crew = document.getElementById("shareCrew").value.trim() || "No Crew";
 
-  // Format MM/DD/Year
   const now = new Date();
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
   const yyyy = now.getFullYear();
 
-  const dateDisplay = `${mm}/${dd}/${yyyy}`; // Na obrazie: MM/DD/Year (np. 09/20/2026)
-  const dateFile = `${mm}-${dd}-${yyyy}`;    // W nazwie pliku: MM-DD-Year (np. 09-20-2026)
+  const dateDisplay = `${mm}/${dd}/${yyyy}`;
+  const dateFile = `${mm}-${dd}-${yyyy}`;
 
   let totalWorth = 0;
   let totalItemsCount = 0;
@@ -760,11 +790,11 @@ function generateSummaryImage() {
   ctx.font = "14px 'Segoe UI', sans-serif";
   ctx.fillText("⚓ Crew: " + crew, 40, 84);
 
-  // Version info in top-right corner
+  // Version info
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.3", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.4", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider
@@ -837,14 +867,14 @@ function generateSummaryImage() {
     ctx.fillText(formatMoney(val), x + 14, y + 34);
   });
 
-  // 7. Data w prawym dolnym rogu (MM/DD/Year)
+  // 7. Data
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
   ctx.fillText(`Generated: ${dateDisplay}`, width - 40, height - 28);
   ctx.textAlign = "left";
 
-  // 8. Pobranie pliku z nazwą fot_[nickname]_[MM-DD-YYYY].png
+  // 8. Download
   const safeNick = nick.toLowerCase().replace(/[^a-z0-9_-]/gi, '_');
   const link = document.createElement("a");
   link.download = `fot_${safeNick}_${dateFile}.png`;
@@ -862,7 +892,6 @@ function exportInventory() {
     return;
   }
 
-  // Format daty MM-DD-Year
   const now = new Date();
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const dd = String(now.getDate()).padStart(2, '0');
@@ -879,7 +908,7 @@ function exportInventory() {
 }
 
 function importInventory(event) {
-  const file = event.target.files[0];
+  const file = event?.target?.files?.[0];
   if (!file) return;
 
   const reader = new FileReader();
@@ -898,7 +927,41 @@ function importInventory(event) {
     }
   };
   reader.readAsText(file);
-  event.target.value = "";
+  if (event.target && event.target.value !== undefined) {
+    event.target.value = "";
+  }
+}
+
+// Quick Paste directly from System Clipboard
+async function quickPasteInventory() {
+  const btn = document.getElementById('btn-quick-paste');
+  const originalText = btn ? btn.innerHTML : "📋 Quick Paste";
+
+  try {
+    const clipboardText = await navigator.clipboard.readText();
+    if (!clipboardText || !clipboardText.trim()) {
+      alert("Clipboard is empty! Run /fot scan stop in-game first.");
+      return;
+    }
+
+    const imported = JSON.parse(clipboardText.trim());
+    if (Array.isArray(imported)) {
+      userInventory = imported;
+      renderInventory();
+
+      if (btn) {
+        btn.innerHTML = "✔ Pasted!";
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 1500);
+      }
+    } else {
+      alert("Invalid clipboard format: expected a JSON array.");
+    }
+  } catch (err) {
+    console.error("Quick paste error:", err);
+    alert("Failed to paste: clipboard does not contain valid JSON.");
+  }
 }
 
 // Event Listeners & Startup
@@ -933,7 +996,8 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     document.getElementById("changelogModal").style.display = "none";
     document.getElementById("shareModal").style.display = "none";
-    document.getElementById("priceChangesModal").style.display = "none";
+    const priceModal = document.getElementById("priceChangesModal");
+    if (priceModal) priceModal.style.display = "none";
   }
 });
 

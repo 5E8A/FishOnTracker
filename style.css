@@ -724,3 +724,37 @@ tr:last-child td { border-bottom: none; }
   gap: 8px;
   margin-top: 8px;
 }
+
+/* Unknown Items Banner & Badge */
+.unknown-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(234, 179, 8, 0.1);
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #fef08a;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.unknown-alert-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.unknown-alert strong {
+  color: #facc15;
+  font-weight: 700;
+}
+
+.warning-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  cursor: help;
+  font-size: 0.85rem;
+  filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.6));
+}
