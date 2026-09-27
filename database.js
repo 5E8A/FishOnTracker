@@ -16,7 +16,7 @@ const PET_RARITIES = {
 
 // Climates and shard pricing
 const ARMOR_CLIMATES = [
-  { name: "Subtropical", shardPrice: 3000 },
+  { name: "Subtropical", shardPrice: 5000 },
   { name: "Subarctic", shardPrice: 7000 },
   { name: "Semi-Arid", shardPrice: 7000 },
   { name: "Savanna", shardPrice: 5000 },
@@ -113,7 +113,7 @@ const ITEMS_DB = [
   // Baits — Rare
   { id: "sand_eels", name: "Sand Eels", category: "Baits", price: 400 },
   { id: "mussels", name: "Mussels", category: "Baits", price: 325 },
-  { id: "french_fry", name: "French Fry", category: "Baits", price: 350 },
+  { id: "french_fry", name: "French Fry", category: "Baits", price: 250 },
   { id: "chicken_scraps", name: "Chicken Scraps", category: "Baits", price: 350 },
   { id: "herring_live_bait", name: "Herring Live Bait", category: "Baits", price: 400 },
   { id: "cut_shad", name: "Cut Shad", category: "Baits", price: 350 },
@@ -121,7 +121,7 @@ const ITEMS_DB = [
   { id: "white_shrimp", name: "White Shrimp", category: "Baits", price: 400 },
   { id: "nightcrawler", name: "Nightcrawler", category: "Baits", price: 400 },
   { id: "menhaden_live_bait", name: "Menhaden Live Bait", category: "Baits", price: 550 },
-  { id: "sweet_corn", name: "Sweet Corn", category: "Baits", price: 400 },
+  { id: "sweet_corn", name: "Sweet Corn", category: "Baits", price: 350 },
   { id: "small_chunk_of_bonito_cutbait", name: "Small Chunk Of Bonito Cutbait", category: "Baits", price: 400 },
   { id: "small_chunk_of_meat", name: "Small Chunk Of Meat", category: "Baits", price: 400 },
   { id: "chicken_nugget", name: "Chicken Nugget", category: "Baits", price: 400 },
@@ -147,7 +147,7 @@ const ITEMS_DB = [
   { id: "mozzarella_cube", name: "Mozzarella Cube", category: "Baits", price: 1500 },
   { id: "cut_mullet", name: "Cut Mullet", category: "Baits", price: 1000 },
   { id: "shad_live_bait", name: "Shad Live Bait", category: "Baits", price: 1000 },
-  { id: "rusty_crawfish", name: "Rusty Crawfish", category: "Baits", price: 1500 },
+  { id: "rusty_crawfish", name: "Rusty Crawfish", category: "Baits", price: 1000 },
   { id: "louisiana_crawfish", name: "Louisiana Crawfish", category: "Baits", price: 700 },
   { id: "yabby_crawfish", name: "Yabby Crawfish", category: "Baits", price: 700 },
   { id: "pinfish_live_bait", name: "Pinfish Live Bait", category: "Baits", price: 1500 },
@@ -178,10 +178,10 @@ const ITEMS_DB = [
   { id: "frog_rainforest_yellow", name: "Frog (Rainforest Yellow)", category: "Baits", price: 2000 },
   { id: "murray_crawfish", name: "Murray Crawfish", category: "Baits", price: 4000 },
   { id: "cownose_ray_cutbait", name: "Cownose Ray Cutbait", category: "Baits", price: 6000 },
-  { id: "glide_bait_rainbow_trout", name: "Glide Bait (Rainbow Trout)", category: "Baits", price: 4000 },
+  { id: "glide_bait_rainbow_trout", name: "Glide Bait (Rainbow Trout)", category: "Baits", price: 7000 },
   { id: "carp_head", name: "Carp Head", category: "Baits", price: 4000 },
   { id: "large_chunk_of_meat", name: "Large Chunk of Meat", category: "Baits", price: 4000 },
-  { id: "ballyhoo_live_bait", name: "Ballyhoo Live Bait", category: "Baits", price: 4000 },
+  { id: "ballyhoo_live_bait", name: "Ballyhoo Live Bait", category: "Baits", price: 3500 },
   { id: "bonito_live_bait", name: "Bonito Live Bait", category: "Baits", price: 4000 },
   { id: "large_chunk_of_bonito_cutbait", name: "Large Chunk of Bonito Cutbait", category: "Baits", price: 4000 },
   { id: "large_cut_squid", name: "Large Cut Squid", category: "Baits", price: 4000 },
@@ -202,8 +202,8 @@ const ITEMS_DB = [
 
   // Baits — Mythical
   { id: "marlin_lure_blue_green", name: "Marlin Lure (Blue Green)", category: "Baits", price: 15000 },
-  { id: "glide_bait_crystal", name: "Glide Bait (Crystal)", category: "Baits", price: 15000 },
-  { id: "glide_bait_bluegill", name: "Glide Bait (Bluegill)", category: "Baits", price: 15000 },
+  { id: "glide_bait_crystal", name: "Glide Bait (Crystal)", category: "Baits", price: 11000 },
+  { id: "glide_bait_bluegill", name: "Glide Bait (Bluegill)", category: "Baits", price: 11000 },
   { id: "spinnerbait_golden_shimmer", name: "Spinnerbait (Golden Shimmer)", category: "Baits", price: 1500000 },
   { id: "spinnerbait_white_shimmer", name: "Spinnerbait (White Shimmer)", category: "Baits", price: 500000 },
   { id: "spinnerbait_black_shimmer", name: "Spinnerbait (Black Shimmer)", category: "Baits", price: 1000000 },

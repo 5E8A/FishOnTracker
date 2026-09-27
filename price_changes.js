@@ -1,5 +1,19 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+          {
+    date: "2026-09-27",
+    tag: "Price Update",
+    changes: [
+        { name: "Subtropical Shard", oldPrice: 3000, newPrice: 5000 },
+        { name: "Glide Bait (Rainbow Trout)", oldPrice: 4000, newPrice: 7000 },
+        { name: "Ballyhoo Live Bait", oldPrice: 4000, newPrice: 3500 },
+        { name: "Rusty Crawfish", oldPrice: 1500, newPrice: 1000 },
+        { name: "French Fry", oldPrice: 350, newPrice: 250 },
+        { name: "Sweet Corn", oldPrice: 400, newPrice: 350 },
+        { name: "Glide Bait (Crystal)", oldPrice: 15000, newPrice: 11000 },
+        { name: "Glide Bait (Bluegill)", oldPrice: 15000, newPrice: 11000 },
+    ]
+    },
         {
     date: "2026-09-25",
     tag: "Price Update",
