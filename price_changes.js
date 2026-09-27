@@ -8,10 +8,12 @@ const PRICE_CHANGES_DATA = [
         { name: "Glide Bait (Rainbow Trout)", oldPrice: 4000, newPrice: 7000 },
         { name: "Ballyhoo Live Bait", oldPrice: 4000, newPrice: 3500 },
         { name: "Rusty Crawfish", oldPrice: 1500, newPrice: 1000 },
+        { name: "Florida Crawfish", oldPrice: 1500, newPrice: 1000 },
         { name: "French Fry", oldPrice: 350, newPrice: 250 },
         { name: "Sweet Corn", oldPrice: 400, newPrice: 350 },
         { name: "Glide Bait (Crystal)", oldPrice: 15000, newPrice: 11000 },
         { name: "Glide Bait (Bluegill)", oldPrice: 15000, newPrice: 11000 },
+        { name: "Small Chunk Of Bonito Cutbait", oldPrice: 400, newPrice: 300 },
     ]
     },
         {
@@ -29,6 +31,7 @@ const PRICE_CHANGES_DATA = [
         { name: "Frog (Rainforest Yellow)", oldPrice: 2500, newPrice: 2000 },
         { name: "Mythical Chummer", oldPrice: 225000, newPrice: 200000 },
         { name: "Cut Mullet", oldPrice: 1200, newPrice: 1000 },
+
     ]
     },
     {

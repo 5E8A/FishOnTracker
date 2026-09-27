@@ -122,7 +122,7 @@ const ITEMS_DB = [
   { id: "nightcrawler", name: "Nightcrawler", category: "Baits", price: 400 },
   { id: "menhaden_live_bait", name: "Menhaden Live Bait", category: "Baits", price: 550 },
   { id: "sweet_corn", name: "Sweet Corn", category: "Baits", price: 350 },
-  { id: "small_chunk_of_bonito_cutbait", name: "Small Chunk Of Bonito Cutbait", category: "Baits", price: 400 },
+  { id: "small_chunk_of_bonito_cutbait", name: "Small Chunk Of Bonito Cutbait", category: "Baits", price: 300 },
   { id: "small_chunk_of_meat", name: "Small Chunk Of Meat", category: "Baits", price: 400 },
   { id: "chicken_nugget", name: "Chicken Nugget", category: "Baits", price: 400 },
   { id: "mullet_live_bait", name: "Mullet Live Bait", category: "Baits", price: 400 },
@@ -142,7 +142,7 @@ const ITEMS_DB = [
 
   // Baits — Epic
   { id: "cut_bream", name: "Cut Bream", category: "Baits", price: 1500 },
-  { id: "florida_crawfish", name: "Florida Crawfish", category: "Baits", price: 1500 },
+  { id: "florida_crawfish", name: "Florida Crawfish", category: "Baits", price: 1000 },
   { id: "cut_roach", name: "Cut Roach", category: "Baits", price: 3500 },
   { id: "mozzarella_cube", name: "Mozzarella Cube", category: "Baits", price: 1500 },
   { id: "cut_mullet", name: "Cut Mullet", category: "Baits", price: 1000 },
