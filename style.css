@@ -29,8 +29,43 @@ body {
   gap: 16px;
 }
 
-.header { text-align: center; }
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 10px 0;
+  padding: 0;
+  width: 100%;
+}
+
+.header h1,
+.header-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 32px;
+  color: #69aa7c;
+  letter-spacing: 2px;
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+  /* Mocniejszy cień dopasowany do większego tekstu */
+  text-shadow: 3px 3px 0px #0c1710, 4px 4px 0px rgba(0, 0, 0, 0.7);
+}
+
 .header h1 { font-size: 1.8rem; font-weight: 800; }
+
+.header-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 26px;
+  color: #f0fdf4;
+  letter-spacing: 2px;
+  margin: 0;
+  text-transform: uppercase;
+  /* Efekt wypukłego cienia tekstu z Minecrafta */
+  text-shadow: 3px 3px 0px #0c1710, 4px 4px 0px rgba(0, 0, 0, 0.6);
+}
 
 .version-badge {
   display: inline-flex;
@@ -170,6 +205,7 @@ body {
   padding: 18px;
   text-align: center;
   box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  margin-top: 0;
 }
 .networth-label {
   color: var(--text-muted);
@@ -451,6 +487,10 @@ body {
 @media (max-width: 600px) {
   .items-grid { grid-template-columns: repeat(2, 1fr); }
   .inventory-search-input { width: 100%; }
+  .header-title {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
 }
 
 .item-card {
@@ -718,11 +758,13 @@ tr:last-child td { border-bottom: none; }
 }
 
 .header-badges {
-  display: inline-flex;
-  justify-content: center;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
-  margin-top: 8px;
+  margin: 0;
+  padding: 0;
 }
 
 /* Unknown Items Banner & Badge */

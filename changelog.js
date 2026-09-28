@@ -1,5 +1,25 @@
 // changelog.js
 const CHANGELOG_DATA = [
+        {
+    version: "v1.0.5",
+    date: "Official Release",
+    changes: [
+      "Added Supercharges to the database",
+      "Added support for standalone Rod Blank and Gear System Tech",
+      "Added dynamic pricing support for exported Rod Parts",
+      "Added event Baits to the database",
+    ]
+  },
+      {
+    version: "v1.0.4",
+    date: "Official Release",
+    changes: [
+      "Added Quick Paste button for JSON file, for future FishOnTracker Mod",
+      "Added missing Poles and Reels to the database",
+      "Added missing database item indicators",
+      "Changed a few internal item IDs"
+    ]
+  },
     {
     version: "v1.0.4",
     date: "Official Release",

@@ -118,6 +118,15 @@ function calculateArmorPrice(climateName, rarity, rating, infusion) {
 
 // Rod Parts pricing logic
 function calculateRodPrice(type, model, tech) {
+  if (type === "BlankTech") {
+    const t = ROD_BLANK_TECHS.find(x => x.name === model);
+    return t ? t.price : 0;
+  }
+  if (type === "GearTech") {
+    const g = GEAR_SYSTEM_TECHS.find(x => x.name === model);
+    return g ? g.price : 0;
+  }
+
   const baseItems = BASE_ROD_ITEMS[type] || [];
   const found = baseItems.find(i => i.name === model);
   const basePrice = found ? found.basePrice : 0;
@@ -134,6 +143,47 @@ function calculateRodPrice(type, model, tech) {
   return basePrice + techPrice;
 }
 
+// Dynamic Supercharge Pricing (1 Lightning in a Bottle + Shards)
+function calculateSuperchargePrice(climateName, rarity) {
+  const bottleItem = ITEMS_DB.find(i => i.id === "lightning_in_a_bottle");
+  const bottlePrice = bottleItem ? bottleItem.price : 90000;
+
+  const shardId = climateName.toLowerCase().replace(/[^a-z0-9]/g, '_') + "_shard";
+  const shardItem = ITEMS_DB.find(i => i.id === shardId);
+
+  let shardPrice = 0;
+  if (shardItem) {
+    shardPrice = shardItem.price;
+  } else {
+    const climateObj = ARMOR_CLIMATES.find(c => c.name === climateName);
+    shardPrice = climateObj ? climateObj.shardPrice : 7000;
+  }
+
+  const shardCount = SUPERCHARGE_SHARDS_CUMULATIVE[rarity] || 8;
+  return bottlePrice + (shardCount * shardPrice);
+}
+
+// Helper parser for imported Rod Parts names
+function parseRodPartFromName(fullName) {
+  let baseName = fullName;
+  let techName = "None";
+
+  const bracketMatch = fullName.match(/\[(.*?)\]/);
+  if (bracketMatch) {
+    techName = bracketMatch[1].trim();
+    baseName = fullName.replace(/\[.*?\]/, "").trim();
+  }
+
+  let partType = "Pole";
+  if (baseName.toLowerCase().endsWith("reel")) {
+    partType = "Reel";
+  } else if (baseName.toLowerCase().endsWith("line")) {
+    partType = "Line";
+  }
+
+  return { partType, model: baseName, tech: techName };
+}
+
 // Master Dynamic Price Resolver
 function resolveItemPrice(entry) {
   if (!entry.isCustomItem) {
@@ -147,11 +197,27 @@ function resolveItemPrice(entry) {
     return calculateArmorPrice(entry.climate, entry.rarity, entry.rating, entry.infusion);
   } else if (entry.customType === "rod") {
     return calculateRodPrice(entry.partType, entry.model, entry.tech);
+  } else if (entry.customType === "supercharge") {
+    return calculateSuperchargePrice(entry.climate, entry.rarity);
+  }
+
+  // Fallback for imported Rod Parts where customType isn't set, but category is "Rod Parts"
+  if (entry.category === "Rod Parts" && entry.name) {
+    // 1. Sprawdzenie, czy zaimportowany item to pojedynczy Rod Blank Tech
+    const blankMatch = ROD_BLANK_TECHS.find(t => t.name.toLowerCase() === entry.name.toLowerCase());
+    if (blankMatch) return blankMatch.price;
+
+    // 2. Sprawdzenie, czy zaimportowany item to pojedynczy Gear System Tech
+    const gearMatch = GEAR_SYSTEM_TECHS.find(g => g.name.toLowerCase() === entry.name.toLowerCase());
+    if (gearMatch) return gearMatch.price;
+
+    // 3. Standardowe parsowanie złożonej części wędki (Pole, Reel, Line)
+    const parsed = parseRodPartFromName(entry.name);
+    return calculateRodPrice(parsed.partType, parsed.model, parsed.tech);
   }
 
   return entry.price || 0;
 }
-
 // Quantity and Currency Parsers
 function parseQuantity(input) {
   if (typeof input === 'number') return Math.max(1, Math.floor(input));
@@ -170,7 +236,7 @@ function parseQuantity(input) {
 }
 
 function formatQuantity(qty, category) {
-  if (category === "Pets" || category === "Armor" || category === "Rod Parts" || category === "Baits" || category === "Pet Items" || category === "Skins") {
+  if (category === "Pets" || category === "Armor" || category === "Rod Parts" || category === "Supercharges" || category === "Baits" || category === "Pet Items" || category === "Skins") {
     return `x${qty}`;
   }
   if (qty >= 64) {
@@ -199,7 +265,9 @@ function formatMoney(amount) {
 
 // Tabs & Navigation
 function initTabs() {
-  const categories = ["Pets", "Armor", "Rod Parts", ...new Set(ITEMS_DB.map(i => i.category))];
+  const categories = ["Pets", "Armor", "Rod Parts", "Supercharges", ...new Set(ITEMS_DB.map(i => i.category))]
+    .filter(cat => cat !== "Fish"); // Wykluczamy Fish z zakładek manualnych
+  
   const tabsContainer = document.getElementById("categoryTabs");
   tabsContainer.innerHTML = "";
 
@@ -240,31 +308,46 @@ function initDropdowns() {
     });
   }
 
+  const superchargeSel = document.getElementById("superchargeClimate");
+  if (superchargeSel) {
+    superchargeSel.innerHTML = "";
+    ARMOR_CLIMATES.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.name;
+      opt.textContent = c.name;
+      superchargeSel.appendChild(opt);
+    });
+  }
+
   if (document.getElementById("rodTypeSelect")) {
     onRodTypeChange();
   }
 
   updatePetLivePreview();
   updateArmorLivePreview();
+  updateSuperchargeLivePreview();
 }
 
 function switchView() {
   const petCard = document.getElementById("petCreatorCard");
   const armorCard = document.getElementById("armorCreatorCard");
   const rodCard = document.getElementById("rodCreatorCard");
+  const superchargeCard = document.getElementById("superchargeCreatorCard");
   const searchInput = document.getElementById("searchInput");
   const grid = document.getElementById("itemsGrid");
 
   if (petCard) petCard.style.display = (activeCategory === "Pets") ? "flex" : "none";
   if (armorCard) armorCard.style.display = (activeCategory === "Armor") ? "flex" : "none";
   if (rodCard) rodCard.style.display = (activeCategory === "Rod Parts") ? "flex" : "none";
+  if (superchargeCard) superchargeCard.style.display = (activeCategory === "Supercharges") ? "flex" : "none";
 
-  if (activeCategory === "Pets" || activeCategory === "Armor" || activeCategory === "Rod Parts") {
+  if (activeCategory === "Pets" || activeCategory === "Armor" || activeCategory === "Rod Parts" || activeCategory === "Supercharges") {
     if (searchInput) searchInput.style.display = "none";
     if (grid) grid.style.display = "none";
     if (activeCategory === "Pets") updatePetLivePreview();
     if (activeCategory === "Armor") updateArmorLivePreview();
     if (activeCategory === "Rod Parts") updateRodLivePreview();
+    if (activeCategory === "Supercharges") updateSuperchargeLivePreview();
   } else {
     if (searchInput) searchInput.style.display = "block";
     if (grid) grid.style.display = "grid";
@@ -380,37 +463,59 @@ function onRodTypeChange() {
   const techSel = document.getElementById("rodTechSelect");
 
   modelSel.innerHTML = "";
-  (BASE_ROD_ITEMS[type] || []).forEach(item => {
-    const opt = document.createElement("option");
-    opt.value = item.name;
-    opt.textContent = `${item.name} (${formatMoney(item.basePrice)})`;
-    modelSel.appendChild(opt);
-  });
 
-  if (type === "Pole") {
-    techGroup.style.display = "flex";
-    techLabel.textContent = "Rod Blank Tech";
-    techSel.innerHTML = "";
-    ROD_BLANK_TECHS.forEach(t => {
+  if (type === "BlankTech") {
+    // Lista samych Rod Blank Tech
+    ROD_BLANK_TECHS.filter(t => t.name !== "None").forEach(item => {
       const opt = document.createElement("option");
-      opt.value = t.name;
-      opt.dataset.price = t.price;
-      opt.textContent = t.price > 0 ? `${t.name} (+${formatMoney(t.price)})` : t.name;
-      techSel.appendChild(opt);
+      opt.value = item.name;
+      opt.textContent = `${item.name} (${formatMoney(item.price)})`;
+      modelSel.appendChild(opt);
     });
-  } else if (type === "Reel") {
-    techGroup.style.display = "flex";
-    techLabel.textContent = "Gear System Tech";
-    techSel.innerHTML = "";
-    GEAR_SYSTEM_TECHS.forEach(t => {
-      const opt = document.createElement("option");
-      opt.value = t.name;
-      opt.dataset.price = t.price;
-      opt.textContent = t.price > 0 ? `${t.name} (+${formatMoney(t.price)})` : t.name;
-      techSel.appendChild(opt);
-    });
-  } else {
     techGroup.style.display = "none";
+  } else if (type === "GearTech") {
+    // Lista samych Gear System Tech
+    GEAR_SYSTEM_TECHS.filter(g => g.name !== "None").forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item.name;
+      opt.textContent = `${item.name} (${formatMoney(item.price)})`;
+      modelSel.appendChild(opt);
+    });
+    techGroup.style.display = "none";
+  } else {
+    // Standardowe bazy Pole, Reel, Line
+    (BASE_ROD_ITEMS[type] || []).forEach(item => {
+      const opt = document.createElement("option");
+      opt.value = item.name;
+      opt.textContent = `${item.name} (${formatMoney(item.basePrice)})`;
+      modelSel.appendChild(opt);
+    });
+
+    if (type === "Pole") {
+      techGroup.style.display = "flex";
+      techLabel.textContent = "Rod Blank Tech";
+      techSel.innerHTML = "";
+      ROD_BLANK_TECHS.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.name;
+        opt.dataset.price = t.price;
+        opt.textContent = t.price > 0 ? `${t.name} (+${formatMoney(t.price)})` : t.name;
+        techSel.appendChild(opt);
+      });
+    } else if (type === "Reel") {
+      techGroup.style.display = "flex";
+      techLabel.textContent = "Gear System Tech";
+      techSel.innerHTML = "";
+      GEAR_SYSTEM_TECHS.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.name;
+        opt.dataset.price = t.price;
+        opt.textContent = t.price > 0 ? `${t.name} (+${formatMoney(t.price)})` : t.name;
+        techSel.appendChild(opt);
+      });
+    } else {
+      techGroup.style.display = "none";
+    }
   }
 
   updateRodLivePreview();
@@ -419,7 +524,7 @@ function onRodTypeChange() {
 function updateRodLivePreview() {
   const type = document.getElementById("rodTypeSelect").value;
   const model = document.getElementById("rodModelSelect").value;
-  const tech = (type !== "Line") ? document.getElementById("rodTechSelect").value : "None";
+  const tech = (type === "Pole" || type === "Reel") ? document.getElementById("rodTechSelect").value : "None";
 
   const price = calculateRodPrice(type, model, tech);
   document.getElementById("rodLivePrice").textContent = formatMoney(price);
@@ -428,10 +533,10 @@ function updateRodLivePreview() {
 function addCustomRodPart() {
   const type = document.getElementById("rodTypeSelect").value;
   const model = document.getElementById("rodModelSelect").value;
-  const tech = (type !== "Line") ? document.getElementById("rodTechSelect").value : "None";
+  const tech = (type === "Pole" || type === "Reel") ? document.getElementById("rodTechSelect").value : "None";
 
   let name = model;
-  if (type !== "Line" && tech && tech !== "None") {
+  if ((type === "Pole" || type === "Reel") && tech && tech !== "None") {
     name += ` [${tech}]`;
   }
 
@@ -444,6 +549,34 @@ function addCustomRodPart() {
     tech,
     name,
     category: "Rod Parts",
+    qty: 1
+  });
+
+  renderInventory();
+}
+
+// Live Preview & Add Supercharge
+function updateSuperchargeLivePreview() {
+  const cEl = document.getElementById("superchargeClimate");
+  const rEl = document.getElementById("superchargeRarity");
+  if (!cEl || !rEl) return;
+
+  const price = calculateSuperchargePrice(cEl.value, rEl.value);
+  document.getElementById("superchargeLivePrice").textContent = formatMoney(price);
+}
+
+function addCustomSupercharge() {
+  const climate = document.getElementById("superchargeClimate").value;
+  const rarity = document.getElementById("superchargeRarity").value;
+
+  userInventory.push({
+    id: `supercharge_${Date.now()}`,
+    isCustomItem: true,
+    customType: "supercharge",
+    climate,
+    rarity,
+    name: `${rarity} ${climate} Supercharge`,
+    category: "Supercharges",
     qty: 1
   });
 
@@ -559,7 +692,6 @@ function toggleSort(field) {
 }
 
 // Main Inventory Rendering
-// Main Inventory Rendering
 function renderInventory() {
   localStorage.setItem("fishon_inventory", JSON.stringify(userInventory));
 
@@ -602,7 +734,6 @@ function renderInventory() {
     return { originalIndex, name, category, price, qty: entry.qty, subtotal, isUnknown };
   });
 
-  // Aktualizacja bannera ostrzegawczego nad tabelą
   if (unknownAlert && unknownCountEl) {
     if (unknownItemsCount > 0) {
       unknownCountEl.textContent = unknownItemsCount;
@@ -701,7 +832,7 @@ function renderInventory() {
 
   const breakdownContainer = document.getElementById("categoryBreakdown");
   breakdownContainer.innerHTML = "";
-  const allCategories = ["Pets", "Armor", "Rod Parts", ...new Set(ITEMS_DB.map(i => i.category))];
+  const allCategories = ["Pets", "Armor", "Rod Parts", "Supercharges", ...new Set(ITEMS_DB.map(i => i.category))].filter(cat => cat !== "Fish");
 
   allCategories.forEach(cat => {
     const amount = categoryTotals[cat] || 0;
@@ -794,7 +925,7 @@ function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.4", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.5", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider
@@ -828,6 +959,7 @@ function generateSummaryImage() {
     "Pets",
     "Armor",
     "Rod Parts",
+    "Supercharges",
     "Pet Items",
     "Crafting Components",
     "Consumables",

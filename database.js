@@ -14,6 +14,13 @@ const PET_RARITIES = {
   "Mythical": 16
 };
 
+// Cumulative shards required for Supercharge
+const SUPERCHARGE_SHARDS_CUMULATIVE = {
+  "Epic": 8,
+  "Legendary": 32,
+  "Mythical": 96
+};
+
 // Climates and shard pricing
 const ARMOR_CLIMATES = [
   { name: "Subtropical", shardPrice: 5000 },
@@ -207,6 +214,12 @@ const ITEMS_DB = [
   { id: "spinnerbait_golden_shimmer", name: "Spinnerbait (Golden Shimmer)", category: "Baits", price: 1500000 },
   { id: "spinnerbait_white_shimmer", name: "Spinnerbait (White Shimmer)", category: "Baits", price: 500000 },
   { id: "spinnerbait_black_shimmer", name: "Spinnerbait (Black Shimmer)", category: "Baits", price: 1000000 },
+
+  // Baits — Events
+  { id: "stone_crab", name: "Stone Crab", category: "Baits", price: 0 },
+  { id: "creepy_crawlers", name: "Creepy Crawlers", category: "Baits", price: 0 },
+  { id: "frozen_crawlers", name: "Frozen Crawlers", category: "Baits", price: 0 },
+  { id: "southern_ray_cutbait", name: "Southern Ray Cutbait", category: "Baits", price: 0 },
   
   // Skins
   { id: "leatherback_pet", name: "Leatherback Pet", category: "Skins", price: 25000000 },
@@ -215,6 +228,17 @@ const ITEMS_DB = [
   { id: "stormy_sheep_pet", name: "Stormy Sheep Pet", category: "Skins", price: 25000000 },
   { id: "robot_bullfrog_pet", name: "Robot Bullfrog Pet", category: "Skins", price: 25000000 },
 
+  // Fish (Mod import only, zero value)
+  { id: "normal_fish", name: "Normal Fish", category: "Fish", price: 0 },
+  { id: "albino_fish", name: "Albino Fish", category: "Fish", price: 0 },
+  { id: "melanistic_fish", name: "Melanistic Fish", category: "Fish", price: 0 },
+  { id: "trophy_fish", name: "Trophy Fish", category: "Fish", price: 0 },
+  { id: "fabled_fish", name: "Fabled Fish", category: "Fish", price: 0 },
+  { id: "special_fish", name: "Special Fish", category: "Fish", price: 0 },
+  { id: "frozen_fish", name: "Frozen Fish", category: "Fish", price: 0 },
+  { id: "alternate_fish", name: "Alternate Fish", category: "Fish", price: 0 },
+  { id: "zombie_fish", name: "Zombie Fish", category: "Fish", price: 0 },
+  { id: "spooky_fish", name: "Spooky Fish", category: "Fish", price: 0 },
 ];
 
 // Rod Parts Configuration
