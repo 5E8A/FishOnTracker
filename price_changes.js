@@ -1,5 +1,13 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+            {
+    date: "2026-10-03",
+    tag: "Price Update",
+    changes: [
+        { name: "Spinnerbait (White Shad)", oldPrice: 2000, newPrice: 1500 },
+        { name: "Arid Shard", oldPrice: 5500, newPrice: 5000 },
+    ]
+    },
           {
     date: "2026-09-27",
     tag: "Price Update",
@@ -16,7 +24,7 @@ const PRICE_CHANGES_DATA = [
         { name: "Small Chunk Of Bonito Cutbait", oldPrice: 400, newPrice: 300 },
     ]
     },
-        {
+    {
     date: "2026-09-25",
     tag: "Price Update",
     changes: [

@@ -1,5 +1,12 @@
 // changelog.js
 const CHANGELOG_DATA = [
+          {
+    version: "v1.0.6",
+    date: "Official Release",
+    changes: [
+      "Added missing Pet Skins to the database",
+    ]
+  },
         {
     version: "v1.0.5",
     date: "Official Release",

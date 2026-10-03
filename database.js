@@ -31,7 +31,7 @@ const ARMOR_CLIMATES = [
   { name: "Rainforest", shardPrice: 6500 },
   { name: "Mediterranean", shardPrice: 7000 },
   { name: "Oceanic", shardPrice: 6000 },
-  { name: "Arid", shardPrice: 5500 },
+  { name: "Arid", shardPrice: 5000 },
   { name: "Monsoon", shardPrice: 7000 }
 ];
 
@@ -107,7 +107,7 @@ const ITEMS_DB = [
   { id: "grass_shrimp", name: "Grass Shrimp", category: "Baits", price: 200 },
   { id: "pink_salmon_roe", name: "Pink Salmon Roe", category: "Baits", price: 200 },
   { id: "worms", name: "Worms", category: "Baits", price: 200 },
-  { id: "zebra_mussels", name: "Zebra Mussels", category: "Baits", price: 255 },
+  { id: "zebra_mussels", name: "Zebra Mussels", category: "Baits", price: 250 },
   { id: "dough_balls", name: "Dough Balls", category: "Baits", price: 200 },
   { id: "small_cut_squid", name: "Small Cut Squid", category: "Baits", price: 200 },
   { id: "sand_shrimp", name: "Sand Shrimp", category: "Baits", price: 200 },
@@ -145,7 +145,7 @@ const ITEMS_DB = [
   { id: "roostertail_white_chartreuse", name: "Roostertail (White Chartreuse)", category: "Baits", price: 1000 },
   { id: "roostertail_bubblegum", name: "Roostertail (Bubblegum)", category: "Baits", price: 1000 },
   { id: "crankbait_tiger_craw", name: "Crankbait (Tiger Craw)", category: "Baits", price: 1000 },
-  { id: "crankbait_smokin_shad", name: "Crankbait (Smokin' Shad)", category: "Baits", price: 1000 },
+  { id: "crankbait_smokin", name: "Crankbait (Smokin' Shad)", category: "Baits", price: 1000 },
 
   // Baits — Epic
   { id: "cut_bream", name: "Cut Bream", category: "Baits", price: 1500 },
@@ -181,7 +181,7 @@ const ITEMS_DB = [
   // Baits — Legendary
   { id: "rotten_chicken", name: "Rotten Chicken", category: "Baits", price: 4000 },
   { id: "spinnerbait_golden_shiner", name: "Spinnerbait (Golden Shiner)", category: "Baits", price: 4000 },
-  { id: "spinnerbait_white_shad", name: "Spinnerbait (White Shad)", category: "Baits", price: 2000 },
+  { id: "spinnerbait_white_shad", name: "Spinnerbait (White Shad)", category: "Baits", price: 1500 },
   { id: "frog_rainforest_yellow", name: "Frog (Rainforest Yellow)", category: "Baits", price: 2000 },
   { id: "murray_crawfish", name: "Murray Crawfish", category: "Baits", price: 4000 },
   { id: "cownose_ray_cutbait", name: "Cownose Ray Cutbait", category: "Baits", price: 6000 },
@@ -227,6 +227,11 @@ const ITEMS_DB = [
   { id: "royal_capybara_pet", name: "Royal Capybara Pet", category: "Skins", price: 25000000 },
   { id: "stormy_sheep_pet", name: "Stormy Sheep Pet", category: "Skins", price: 25000000 },
   { id: "robot_bullfrog_pet", name: "Robot Bullfrog Pet", category: "Skins", price: 25000000 },
+  { id: "arctic_fox_pet", name: "Arctic Fox Pet", category: "Skins", price: 25000000 },
+  { id: "snow_bear_pet", name: "Snow Bear Pet", category: "Skins", price: 25000000 },
+  { id: "bald_eagle_pet", name: "Bald Eagle Pet", category: "Skins", price: 25000000 },
+  { id: "scarface_pet", name: "Scarface Pet", category: "Skins", price: 25000000 },
+  { id: "mallard_pet", name: "Mallard Pet", category: "Skins", price: 25000000 },
 
   // Fish (Mod import only, zero value)
   { id: "normal_fish", name: "Normal Fish", category: "Fish", price: 0 },
