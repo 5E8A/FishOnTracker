@@ -1,5 +1,17 @@
 // changelog.js
 const CHANGELOG_DATA = [
+            {
+    version: "v1.0.7",
+    date: "Official Release",
+    changes: [
+      "Added minecraft head for Share Cards",
+      "Added dynamic level badge colors to Share Cards",
+      "Share Card details (IGN, level, crew) will now be saved in web cache",
+      "Hide Crew name label on Share Cards if left blank",
+      "Removed x symbol in total items tracked on Share Cards",
+      "Added Vacation Koala Pet to the database",
+    ]
+  },
           {
     version: "v1.0.6",
     date: "Official Release",

@@ -18,6 +18,20 @@ function closeChangelogModal(event) {
 
 // Modal Share Card Controls
 function openShareModal() {
+  const savedNick = localStorage.getItem("fot_share_nick");
+  const savedLevel = localStorage.getItem("fot_share_level");
+  const savedCrew = localStorage.getItem("fot_share_crew");
+
+  if (savedNick !== null) {
+    document.getElementById("shareNick").value = savedNick;
+  }
+  if (savedLevel !== null) {
+    document.getElementById("shareLevel").value = savedLevel;
+  }
+  if (savedCrew !== null) {
+    document.getElementById("shareCrew").value = savedCrew;
+  }
+
   document.getElementById("shareModal").style.display = "flex";
 }
 
@@ -207,11 +221,11 @@ function resolveItemPrice(entry) {
     const blankMatch = ROD_BLANK_TECHS.find(t => t.name.toLowerCase() === entry.name.toLowerCase());
     if (blankMatch) return blankMatch.price;
 
-    // 2. Sprawdzenie, czy zaimportowany item to pojedynczy Gear System Tech
+  
     const gearMatch = GEAR_SYSTEM_TECHS.find(g => g.name.toLowerCase() === entry.name.toLowerCase());
     if (gearMatch) return gearMatch.price;
 
-    // 3. Standardowe parsowanie złożonej części wędki (Pole, Reel, Line)
+  
     const parsed = parseRodPartFromName(entry.name);
     return calculateRodPrice(parsed.partType, parsed.model, parsed.tech);
   }
@@ -465,7 +479,7 @@ function onRodTypeChange() {
   modelSel.innerHTML = "";
 
   if (type === "BlankTech") {
-    // Lista samych Rod Blank Tech
+    
     ROD_BLANK_TECHS.filter(t => t.name !== "None").forEach(item => {
       const opt = document.createElement("option");
       opt.value = item.name;
@@ -474,7 +488,7 @@ function onRodTypeChange() {
     });
     techGroup.style.display = "none";
   } else if (type === "GearTech") {
-    // Lista samych Gear System Tech
+    
     GEAR_SYSTEM_TECHS.filter(g => g.name !== "None").forEach(item => {
       const opt = document.createElement("option");
       opt.value = item.name;
@@ -483,7 +497,7 @@ function onRodTypeChange() {
     });
     techGroup.style.display = "none";
   } else {
-    // Standardowe bazy Pole, Reel, Line
+    
     (BASE_ROD_ITEMS[type] || []).forEach(item => {
       const opt = document.createElement("option");
       opt.value = item.name;
@@ -843,11 +857,85 @@ function renderInventory() {
   });
 }
 
-// Summary Image Generator (HTML5 Canvas - 490px Height)
-function generateSummaryImage() {
-  const nick = document.getElementById("shareNick").value.trim() || "Player";
-  const level = document.getElementById("shareLevel").value.trim() || "1";
-  const crew = document.getElementById("shareCrew").value.trim() || "No Crew";
+function loadPlayerAvatar(nick) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null); // fallback w razie braku sieci / błędnego nicku
+    img.src = `https://mc-heads.net/avatar/${encodeURIComponent(nick)}/52`;
+  });
+}
+
+const LEVEL_TIER_COLORS = [
+  "#8A897E", // 0-9
+  "#868A6E", // 10-19
+  "#BBCF53", // 20-29
+  "#BBCF53", // 30-39
+  "#E8D41E", // 40-49
+  "#E8A81E", // 50-59
+  "#7FD223", // 60-69
+  "#7FD223", // 70-79
+  "#23F133", // 80-89
+  "#23F133", // 90-99
+  "#1EE8B2", // 100-109
+  "#1EB6E8", // 110-119
+  "#1958E9", // 120-129
+  "#1958E9", // 130-139
+  "#411DE8", // 140-149
+  "#9B1EE8", // 150-159
+  "#9B1EE8", // 160-169
+  "#BE12D2", // 170-179
+  "#BE12D2", // 180-189
+  "#E81ED4", // 190-199
+  "#E81E61", // 200-209
+  "#AC1648", // 210-219
+  "#83232B", // 220-229
+  "#A00952", // 230-239
+  "#71316B", // 240-249
+  "#D03EC2", // 250-259
+  "#E675DB", // 260-269
+  "#DE9DD8", // 270-279
+  "#E4C1E1", // 280-289
+  "#E1C9DF"  // 290-299
+];
+
+function getLevelColors(level) {
+  const lvl = parseInt(level, 10) || 0;
+  if (lvl >= 300) return "#ffffff";
+  const tier = Math.floor(lvl / 10);
+  return LEVEL_TIER_COLORS[tier] || "#ffffff";
+}
+
+
+function adjustBrightness(hex, percent) {
+  const cleanHex = hex.replace("#", "");
+  const num = parseInt(cleanHex.length === 3 
+    ? cleanHex.split("").map(c => c + c).join("") 
+    : cleanHex, 16);
+  
+  const amt = Math.round(255 * (percent / 100));
+  const r = Math.max(0, Math.min(255, (num >> 16) + amt));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+  const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+  
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+// Summary Image Generator
+async function generateSummaryImage() {
+  const nickInput = document.getElementById("shareNick").value.trim();
+  const levelInput = document.getElementById("shareLevel").value.trim();
+  const rawCrew = document.getElementById("shareCrew").value.trim();
+
+  // Zapis do localStorage
+  localStorage.setItem("fot_share_nick", nickInput);
+  localStorage.setItem("fot_share_level", levelInput);
+  localStorage.setItem("fot_share_crew", rawCrew);
+
+  const nick = nickInput || "Player";
+  const level = levelInput || "1";
+  const hasCrew = rawCrew.length > 0 && rawCrew.toLowerCase() !== "no crew";
 
   const now = new Date();
   const mm = String(now.getMonth() + 1).padStart(2, '0');
@@ -875,6 +963,8 @@ function generateSummaryImage() {
     categoryTotals[category] = (categoryTotals[category] || 0) + sub;
   });
 
+  const avatarImg = await loadPlayerAvatar(nick);
+
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   const width = 850;
@@ -894,61 +984,108 @@ function generateSummaryImage() {
   ctx.lineWidth = 3;
   ctx.strokeRect(12, 12, width - 24, height - 24);
 
-  // 3. User Header
+  // 3. User Avatar & Header
+  const avatarX = 40;
+  const avatarY = 36;
+  const avatarSize = 52;
+  const textStartX = avatarImg ? avatarX + avatarSize + 16 : 40;
+
+  if (avatarImg) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, 10);
+    ctx.clip();
+    ctx.drawImage(avatarImg, avatarX, avatarY, avatarSize, avatarSize);
+    ctx.restore();
+
+    ctx.strokeStyle = "#22382b";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(avatarX, avatarY, avatarSize, avatarSize, 10);
+    ctx.stroke();
+  }
+
+
+  const nickY = hasCrew ? 58 : 69;
+  const pillY = hasCrew ? 37 : 48;
+
+  // Nickname
   ctx.fillStyle = "#f0fdf4";
   ctx.font = "bold 26px 'Segoe UI', sans-serif";
-  ctx.fillText(nick, 40, 56);
+  ctx.fillText(nick, textStartX, nickY);
+
+  const nickWidth = ctx.measureText(nick).width;
 
   // Level Pill
-  const nickWidth = ctx.measureText(nick).width;
+// Pobieramy kolor przypisany do poziomu
+  const baseColor = getLevelColors(level);
+  const darkColor = adjustBrightness(baseColor, -35); // 35% ciemniejszy odcień na dół
+  const shadowColor = adjustBrightness(baseColor, -75); // bardzo ciemny cień w stylu MC
+
   ctx.font = "bold 13px 'Segoe UI', sans-serif";
   const lvlText = "LVL " + level;
   const lvlTextWidth = ctx.measureText(lvlText).width;
   const pillPadding = 12;
   const pillW = lvlTextWidth + (pillPadding * 2);
-  const pillX = 40 + nickWidth + 14;
+  const pillX = textStartX + nickWidth + 14;
 
-  ctx.fillStyle = "#1a2820";
+  ctx.fillStyle = "rgba(10, 15, 12, 0.9)";
   ctx.beginPath();
-  ctx.roundRect(pillX, 35, pillW, 26, 6);
+  ctx.roundRect(pillX, pillY, pillW, 26, 6);
   ctx.fill();
 
-  ctx.fillStyle = "#4ade80";
-  ctx.fillText(lvlText, pillX + pillPadding, 52);
+  ctx.strokeStyle = adjustBrightness(baseColor, -50);
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.roundRect(pillX, pillY, pillW, 26, 6);
+  ctx.stroke();
 
-  // Crew name
-  ctx.fillStyle = "#86efac99";
-  ctx.font = "14px 'Segoe UI', sans-serif";
-  ctx.fillText("⚓ Crew: " + crew, 40, 84);
+  const textY = pillY + 18;
+  const textGrad = ctx.createLinearGradient(0, pillY + 4, 0, pillY + 22);
+  textGrad.addColorStop(0, baseColor);    // góra: właściwy jasny kolor
+  textGrad.addColorStop(0.5, baseColor);  // ostre lub miękkie przejście w połowie
+  textGrad.addColorStop(1, darkColor);    // dół: ciemniejszy odcień
+
+  ctx.fillStyle = shadowColor;
+  ctx.fillText(lvlText, pillX + pillPadding + 1.5, textY + 1.5);
+
+  ctx.fillStyle = textGrad;
+  ctx.fillText(lvlText, pillX + pillPadding, textY);
+
+  if (hasCrew) {
+    ctx.fillStyle = "#86efac99";
+    ctx.font = "14px 'Segoe UI', sans-serif";
+    ctx.fillText("⚓ Crew: " + rawCrew, textStartX, 84);
+  }
 
   // Version info
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.0.6", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.0.7", width - 40, 48);
   ctx.textAlign = "left";
 
   // Horizontal divider
   ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(40, 102);
-  ctx.lineTo(width - 40, 102);
+  ctx.moveTo(40, 106);
+  ctx.lineTo(width - 40, 106);
   ctx.stroke();
 
   // 4. Total Net Worth
   ctx.fillStyle = "#86efac99";
   ctx.font = "bold 12px 'Segoe UI', sans-serif";
-  ctx.fillText("TOTAL NET WORTH", 40, 134);
+  ctx.fillText("TOTAL NET WORTH", 40, 136);
 
   ctx.fillStyle = "#4ade80";
   ctx.font = "900 46px 'Segoe UI', sans-serif";
-  ctx.fillText(formatMoney(totalWorth), 40, 184);
+  ctx.fillText(formatMoney(totalWorth), 40, 186);
 
   // 5. Total items count
   ctx.fillStyle = "#86efac99";
   ctx.font = "13px 'Segoe UI', sans-serif";
-  ctx.fillText(`Total items tracked: x${totalItemsCount.toLocaleString()}`, 40, 210);
+  ctx.fillText(`Total items tracked: ${totalItemsCount.toLocaleString()}`, 40, 212);
 
   // 6. Category breakdown grid
   ctx.fillStyle = "#f0fdf4";
@@ -999,7 +1136,7 @@ function generateSummaryImage() {
     ctx.fillText(formatMoney(val), x + 14, y + 34);
   });
 
-  // 7. Data
+  // 7. Date
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";

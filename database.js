@@ -24,10 +24,10 @@ const SUPERCHARGE_SHARDS_CUMULATIVE = {
 // Climates and shard pricing
 const ARMOR_CLIMATES = [
   { name: "Subtropical", shardPrice: 5000 },
-  { name: "Subarctic", shardPrice: 7000 },
+  { name: "Subarctic", shardPrice: 6000 },
   { name: "Semi-Arid", shardPrice: 7000 },
   { name: "Savanna", shardPrice: 5000 },
-  { name: "Continental", shardPrice: 7000 },
+  { name: "Continental", shardPrice: 5500 },
   { name: "Rainforest", shardPrice: 6500 },
   { name: "Mediterranean", shardPrice: 7000 },
   { name: "Oceanic", shardPrice: 6000 },
@@ -73,15 +73,15 @@ const ITEMS_DB = [
   { id: "bigfoot_fur", name: "Bigfoot Fur", category: "Crafting Components", price: 350000 },
   { id: "lightning_in_a_bottle", name: "Lightning in a Bottle", category: "Crafting Components", price: 90000 },
   { id: "infusion_capsule", name: "Infusion Capsule", category: "Crafting Components", price: 350000 },
-  { id: "subtropical_shard", name: "Subtropical Shard", category: "Crafting Components", price: 3000 },
+  { id: "subtropical_shard", name: "Subtropical Shard", category: "Crafting Components", price: 5000 },
   { id: "subarctic_shard", name: "Subarctic Shard", category: "Crafting Components", price: 6000 },
   { id: "semi_arid_shard", name: "Semi-Arid Shard", category: "Crafting Components", price: 7000 },
   { id: "savanna_shard", name: "Savanna Shard", category: "Crafting Components", price: 5000 },
-  { id: "continental_shard", name: "Continental Shard", category: "Crafting Components", price: 7000 },
+  { id: "continental_shard", name: "Continental Shard", category: "Crafting Components", price: 5500 },
   { id: "rainforest_shard", name: "Rainforest Shard", category: "Crafting Components", price: 6500 },
   { id: "mediterranean_shard", name: "Mediterranean Shard", category: "Crafting Components", price: 7000 },
   { id: "oceanic_shard", name: "Oceanic Shard", category: "Crafting Components", price: 6000 },
-  { id: "arid_shard", name: "Arid Shard", category: "Crafting Components", price: 5500 },
+  { id: "arid_shard", name: "Arid Shard", category: "Crafting Components", price: 5000 },
   { id: "monsoon_shard", name: "Monsoon Shard", category: "Crafting Components", price: 7000 },
 
   // Consumables
@@ -196,7 +196,7 @@ const ITEMS_DB = [
   { id: "diving_plug_olive", name: "Diving Plug (Olive)", category: "Baits", price: 4000 },
   { id: "diving_plug_fire_tiger", name: "Diving Plug (Fire Tiger)", category: "Baits", price: 4000 },
   { id: "diving_plug_banana", name: "Diving Plug (Banana)", category: "Baits", price: 4000 },
-  { id: "popper_black_magic", name: "Popper (Black Magic)", category: "Baits", price: 4000 },
+  { id: "popper_black_magic", name: "Popper (Black Magic)", category: "Baits", price: 3500 },
   { id: "popper_ghost", name: "Popper (Ghost)", category: "Baits", price: 6000 },
   { id: "jerkbait_mullet", name: "Jerkbait (Mullet)", category: "Baits", price: 4000 },
   { id: "marlin_lure_blue", name: "Marlin Lure (Blue)", category: "Baits", price: 8000 },
@@ -232,6 +232,7 @@ const ITEMS_DB = [
   { id: "bald_eagle_pet", name: "Bald Eagle Pet", category: "Skins", price: 25000000 },
   { id: "scarface_pet", name: "Scarface Pet", category: "Skins", price: 25000000 },
   { id: "mallard_pet", name: "Mallard Pet", category: "Skins", price: 25000000 },
+  { id: "vacation_koala_pet", name: "Vacation Koala Pet", category: "Skins", price: 25000000 },
 
   // Fish (Mod import only, zero value)
   { id: "normal_fish", name: "Normal Fish", category: "Fish", price: 0 },

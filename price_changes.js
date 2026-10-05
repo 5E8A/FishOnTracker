@@ -1,5 +1,13 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+              {
+    date: "2026-10-05",
+    tag: "Price Update",
+    changes: [
+        { name: "Popper (Black Magic)", oldPrice: 4000, newPrice: 3500 },
+        { name: "Continental Shard", oldPrice: 7000, newPrice: 5500 },
+    ]
+    },
             {
     date: "2026-10-03",
     tag: "Price Update",
