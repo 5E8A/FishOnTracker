@@ -1,5 +1,22 @@
 // changelog.js
 const CHANGELOG_DATA = [
+              {
+    version: "v1.1.0",
+    date: "Official Release",
+    changes: [
+      "Redesigned website layout and navigation",
+      "Added interactive Inventory Sync Preview with live Net Worth comparison",
+      "Added Player Identity Banner",
+      "Added dynamic colors for percentage ratings and armor infusions",
+      "Added Added direct link to the Fabric Mod GitHub repository",
+      "Added disclaimer information to the website footer",
+      "Added billion-scale ($1B+) currency formatting",
+      "Added favicon",
+      "Changed website's default font",
+      "Fixed wrong pet skins names in the database",
+      "Fixed outline colors for level badge on Share Cards",
+    ]
+  },
             {
     version: "v1.0.7",
     date: "Official Release",

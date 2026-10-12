@@ -1,0 +1,42 @@
+:root {
+  --bg-primary: #0a110d;
+  --bg-card: #131d17;
+  --bg-input: #1a2820;
+  --accent: #22c55e;
+  --accent-hover: #16a34a;
+  --text-main: #f0fdf4;
+  --text-muted: #86efac99;
+  --border: #22382b;
+  --danger: #ef4444;
+  --success: #4ade80;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input, button, select, textarea {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}

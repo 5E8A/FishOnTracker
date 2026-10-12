@@ -1,0 +1,284 @@
+/* Modal System Base */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.modal-close-btn:hover {
+  color: var(--danger);
+  background: var(--bg-input);
+}
+
+.modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Changelog Modal */
+.changelog-entry {
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+}
+
+.changelog-entry h4 {
+  color: var(--accent);
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.changelog-entry .date {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.changelog-entry ul {
+  list-style-type: disc;
+  margin-left: 16px;
+  color: #cbd5e1;
+}
+
+.changelog-entry li {
+  margin-top: 4px;
+}
+
+/* Price Updates Modal */
+.price-badge:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.price-dot {
+  background: #38bdf8 !important;
+  box-shadow: 0 0 8px #38bdf8 !important;
+}
+
+.price-entry {
+  border-left: 2px solid #38bdf8 !important;
+}
+
+.price-entry h4 {
+  color: #38bdf8 !important;
+}
+
+.price-change-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(26, 40, 32, 0.4);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 0.82rem;
+}
+
+.price-item-name {
+  color: #f0fdf4;
+  font-weight: 500;
+}
+
+.price-item-values {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+}
+
+.price-item-values .old-val {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.price-item-values .arrow {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.price-item-values .new-val {
+  color: #fff;
+  font-weight: 700;
+}
+
+.diff-badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: bold;
+}
+
+.price-up {
+  color: var(--success);
+  background: rgba(74, 222, 128, 0.15);
+}
+
+.price-down {
+  color: var(--danger);
+  background: rgba(239, 68, 68, 0.15);
+}
+
+/* Modern Diff Sync Preview Modal */
+.diff-summary-card {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr 1fr;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 18, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.diff-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diff-summary-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+
+.diff-summary-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-arrow {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.diff-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.diff-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.88rem;
+  transition: background 0.2s;
+}
+
+.diff-item-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.diff-item-title {
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.diff-qty-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.diff-qty-badge.pos { color: var(--success); }
+.diff-qty-badge.neg { color: var(--danger); }
+
+.diff-value {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.diff-value.pos { color: var(--success); }
+.diff-value.neg { color: var(--danger); }

@@ -1,0 +1,128 @@
+.networth-card {
+  position: relative;
+  background: linear-gradient(135deg, #142e1f, #0c1a12);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px 18px 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-profile-corner {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.15s;
+  user-select: none;
+}
+
+.player-profile-corner:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.player-avatar-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.player-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.player-nick-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-nick-text {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.player-crew-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.player-level-badge {
+  background: #0c120a;
+  border-width: 1.5px;
+  border-style: solid;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  line-height: 1.2;
+}
+
+.networth-center-body {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.networth-label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.networth-value {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--success);
+  margin-top: 4px;
+}
+
+.category-breakdown {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.cat-pill {
+  background: rgba(26, 40, 32, 0.7);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cat-pill b {
+  color: var(--success);
+  font-weight: 700;
+}

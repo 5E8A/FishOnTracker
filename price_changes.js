@@ -1,7 +1,7 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
               {
-    date: "2026-10-05",
+    date: "2026-05-10",
     tag: "Price Update",
     changes: [
         { name: "Popper (Black Magic)", oldPrice: 4000, newPrice: 3500 },
@@ -9,7 +9,7 @@ const PRICE_CHANGES_DATA = [
     ]
     },
             {
-    date: "2026-10-03",
+    date: "2026-03-10",
     tag: "Price Update",
     changes: [
         { name: "Spinnerbait (White Shad)", oldPrice: 2000, newPrice: 1500 },
@@ -17,7 +17,7 @@ const PRICE_CHANGES_DATA = [
     ]
     },
           {
-    date: "2026-09-27",
+    date: "2026-27-09",
     tag: "Price Update",
     changes: [
         { name: "Subtropical Shard", oldPrice: 3000, newPrice: 5000 },
@@ -33,7 +33,7 @@ const PRICE_CHANGES_DATA = [
     ]
     },
     {
-    date: "2026-09-25",
+    date: "2026-25-09",
     tag: "Price Update",
     changes: [
         { name: "Marlin Lure (Blue)", oldPrice: 4000, newPrice: 8000 },
@@ -51,7 +51,7 @@ const PRICE_CHANGES_DATA = [
     ]
     },
     {
-    date: "2026-09-23",
+    date: "2026-23-09",
     tag: "Price Update",
     changes: [
         { name: "Spinnerbait (Chartreuse)", oldPrice: 1500, newPrice: 2500 },
@@ -65,7 +65,7 @@ const PRICE_CHANGES_DATA = [
     ]
     },
     {
-    date: "2026-09-22",
+    date: "2026-22-09",
     tag: "Price Update",
     changes: [
         { name: "Frog (Rainforest Yellow)", oldPrice: 4000, newPrice: 2500 },
@@ -77,7 +77,7 @@ const PRICE_CHANGES_DATA = [
     ]
   },
   {
-    date: "2026-09-20",
+    date: "2026-20-09",
     tag: "Price Update",
     changes: [
         { name: "Roostertail (Fire Tiger)", oldPrice: 400, newPrice: 1000 },

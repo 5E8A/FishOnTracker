@@ -21,19 +21,32 @@ const SUPERCHARGE_SHARDS_CUMULATIVE = {
   "Mythical": 96
 };
 
-// Climates and shard pricing
+function getItemPriceFromDB(itemId, fallbackPrice = 0) {
+  const item = ITEMS_DB.find(i => i.id === itemId);
+  return item ? item.price : fallbackPrice;
+}
+
 const ARMOR_CLIMATES = [
-  { name: "Subtropical", shardPrice: 5000 },
-  { name: "Subarctic", shardPrice: 6000 },
-  { name: "Semi-Arid", shardPrice: 7000 },
-  { name: "Savanna", shardPrice: 5000 },
-  { name: "Continental", shardPrice: 5500 },
-  { name: "Rainforest", shardPrice: 6500 },
-  { name: "Mediterranean", shardPrice: 7000 },
-  { name: "Oceanic", shardPrice: 6000 },
-  { name: "Arid", shardPrice: 5000 },
-  { name: "Monsoon", shardPrice: 7000 }
+  { name: "Subtropical", shardId: "subtropical_shard" },
+  { name: "Subarctic", shardId: "subarctic_shard" },
+  { name: "Semi-Arid", shardId: "semi_arid_shard" },
+  { name: "Savanna", shardId: "savanna_shard" },
+  { name: "Continental", shardId: "continental_shard" },
+  { name: "Rainforest", shardId: "rainforest_shard" },
+  { name: "Mediterranean", shardId: "mediterranean_shard" },
+  { name: "Oceanic", shardId: "oceanic_shard" },
+  { name: "Arid", shardId: "arid_shard" },
+  { name: "Monsoon", shardId: "monsoon_shard" }
 ];
+
+ARMOR_CLIMATES.forEach(climate => {
+  Object.defineProperty(climate, 'shardPrice', {
+    get: function() {
+      return getItemPriceFromDB(this.shardId, 5000);
+    },
+    enumerable: true
+  });
+});
 
 // Cumulative shards required from Common
 const ARMOR_SHARDS_CUMULATIVE = {
@@ -230,8 +243,8 @@ const ITEMS_DB = [
   { id: "arctic_fox_pet", name: "Arctic Fox Pet", category: "Skins", price: 25000000 },
   { id: "snow_bear_pet", name: "Snow Bear Pet", category: "Skins", price: 25000000 },
   { id: "bald_eagle_pet", name: "Bald Eagle Pet", category: "Skins", price: 25000000 },
-  { id: "scarface_pet", name: "Scarface Pet", category: "Skins", price: 25000000 },
-  { id: "mallard_pet", name: "Mallard Pet", category: "Skins", price: 25000000 },
+  { id: "scarface_shark_pet", name: "Scarface Shark Pet", category: "Skins", price: 25000000 },
+  { id: "mallard_duck_pet", name: "Mallard Duck Pet", category: "Skins", price: 25000000 },
   { id: "vacation_koala_pet", name: "Vacation Koala Pet", category: "Skins", price: 25000000 },
 
   // Fish (Mod import only, zero value)
