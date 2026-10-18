@@ -1,5 +1,12 @@
 // price_changes.js
 const PRICE_CHANGES_DATA = [
+                {
+    date: "2026-18-10",
+    tag: "Price Update",
+    changes: [
+        { name: "Bread", oldPrice: 275, newPrice: 350 },
+    ]
+    },
               {
     date: "2026-05-10",
     tag: "Price Update",

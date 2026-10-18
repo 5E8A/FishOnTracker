@@ -125,7 +125,7 @@ const ITEMS_DB = [
   { id: "small_cut_squid", name: "Small Cut Squid", category: "Baits", price: 200 },
   { id: "sand_shrimp", name: "Sand Shrimp", category: "Baits", price: 200 },
   { id: "sand_worm", name: "Sand Worm", category: "Baits", price: 200 },
-  { id: "bread", name: "Bread", category: "Baits", price: 275 },
+  { id: "bread", name: "Bread", category: "Baits", price: 350 },
   { id: "sand_flea", name: "Sand Flea", category: "Baits", price: 200 },
   { id: "clam", name: "Clam", category: "Baits", price: 200 },
   { id: "scallop", name: "Scallop", category: "Baits", price: 200 },
@@ -246,6 +246,7 @@ const ITEMS_DB = [
   { id: "scarface_shark_pet", name: "Scarface Shark Pet", category: "Skins", price: 25000000 },
   { id: "mallard_duck_pet", name: "Mallard Duck Pet", category: "Skins", price: 25000000 },
   { id: "vacation_koala_pet", name: "Vacation Koala Pet", category: "Skins", price: 25000000 },
+  { id: "cherry_blossom_pet_trail", name: "Cherry Blossom Pet Trail", category: "Skins", price: 13000000 },
 
   // Fish (Mod import only, zero value)
   { id: "normal_fish", name: "Normal Fish", category: "Fish", price: 0 },

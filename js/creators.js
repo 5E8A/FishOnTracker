@@ -135,7 +135,7 @@ function addCustomPet() {
   }
 
   userInventory.push({
-    id: `pet_${Date.now()}`,
+    id: `pet_${species.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${rarity.toLowerCase()}_${rating}`,
     isCustomItem: true,
     customType: "pet",
     species,
@@ -173,8 +173,13 @@ function addCustomArmor() {
   if (infusion === "melanistic") infStr = " [Melanistic Infusion]";
   if (infusion === "trophy") infStr = " [Trophy Infusion]";
 
+  const climateKey = climate.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const pieceKey = piece.toLowerCase();
+  const rarityKey = rarity.toLowerCase();
+  const infusionKey = infusion.toLowerCase();
+
   userInventory.push({
-    id: `armor_${Date.now()}`,
+    id: `armor_${climateKey}_${pieceKey}_${rarityKey}_${rating}_${infusionKey}`,
     isCustomItem: true,
     customType: "armor",
     climate,
@@ -274,8 +279,12 @@ function addCustomRodPart() {
     name += ` [${tech}]`;
   }
 
+  const modelKey = model.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const techKey = tech.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const typeKey = type.toLowerCase();
+
   userInventory.push({
-    id: `rod_${Date.now()}`,
+    id: `rod_${typeKey}_${modelKey}_${techKey}`,
     isCustomItem: true,
     customType: "rod",
     partType: type,
@@ -288,7 +297,6 @@ function addCustomRodPart() {
 
   renderInventory();
 }
-
 function updateSuperchargeLivePreview() {
   const cEl = document.getElementById("superchargeClimate");
   const rEl = document.getElementById("superchargeRarity");
@@ -302,8 +310,11 @@ function addCustomSupercharge() {
   const climate = document.getElementById("superchargeClimate").value;
   const rarity = document.getElementById("superchargeRarity").value;
 
+  const climateKey = climate.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const rarityKey = rarity.toLowerCase();
+
   userInventory.push({
-    id: `supercharge_${Date.now()}`,
+    id: `supercharge_${climateKey}_${rarityKey}`,
     isCustomItem: true,
     customType: "supercharge",
     climate,

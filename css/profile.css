@@ -126,3 +126,49 @@
   color: var(--success);
   font-weight: 700;
 }
+
+.cash-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.cash-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.cash-field {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  transition: border-color 0.2s ease;
+}
+
+.cash-field:focus-within {
+  border-color: var(--accent);
+}
+
+.cash-symbol {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-right: 4px;
+}
+
+.cash-field input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 110px;
+  outline: none;
+}

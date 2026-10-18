@@ -1,5 +1,17 @@
 // changelog.js
 const CHANGELOG_DATA = [
+                {
+    version: "v1.1.1",
+    date: "Official Release",
+    changes: [
+      "Exports now include Username, Level, and Cash Balance",
+      "Added In-Game Cash Tracking",
+      "Added Profile Updates detection in Inventory Sync Preview",
+      "Added Unrecognized Items warning in Inventory Sync Preview",
+      "Added JSON versioning to exported files currently at 1.1",
+      "Added Cherry Blossom Pet Trail to the database",
+    ]
+  },
               {
     version: "v1.1.0",
     date: "Official Release",
@@ -8,7 +20,7 @@ const CHANGELOG_DATA = [
       "Added interactive Inventory Sync Preview with live Net Worth comparison",
       "Added Player Identity Banner",
       "Added dynamic colors for percentage ratings and armor infusions",
-      "Added Added direct link to the Fabric Mod GitHub repository",
+      "Added direct link to the Fabric Mod GitHub repository",
       "Added disclaimer information to the website footer",
       "Added billion-scale ($1B+) currency formatting",
       "Added favicon",

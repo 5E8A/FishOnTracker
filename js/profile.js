@@ -109,7 +109,7 @@ async function generateSummaryImage() {
   const dateDisplay = `${mm}/${dd}/${yyyy}`;
   const dateFile = `${mm}-${dd}-${yyyy}`;
 
-  let totalWorth = 0;
+  let itemsWorth = 0;
   let totalItemsCount = 0;
   const categoryTotals = {};
 
@@ -122,10 +122,13 @@ async function generateSummaryImage() {
 
     const price = resolveItemPrice(entry);
     const sub = price * entry.qty;
-    totalWorth += sub;
+    itemsWorth += sub;
     totalItemsCount += entry.qty;
     categoryTotals[category] = (categoryTotals[category] || 0) + sub;
   });
+
+  const currentCash = typeof userCashBalance === 'number' ? userCashBalance : 0;
+  const totalWorth = itemsWorth + currentCash;
 
   const avatarImg = await loadPlayerAvatar(nick);
 
@@ -214,7 +217,7 @@ async function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.1.0", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.1.1", width - 40, 48);
   ctx.textAlign = "left";
 
   ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
@@ -234,11 +237,16 @@ async function generateSummaryImage() {
 
   ctx.fillStyle = "#86efac99";
   ctx.font = "13px 'Segoe UI', sans-serif";
-  ctx.fillText(`Total items tracked: ${totalItemsCount.toLocaleString()}`, 40, 212);
+  const subDetailText = `Items: ${formatMoney(itemsWorth)}  •  Cash: ${formatMoney(currentCash)}`;
+  ctx.fillText(subDetailText, 40, 212);
 
   ctx.fillStyle = "#f0fdf4";
   ctx.font = "bold 13px 'Segoe UI', sans-serif";
-  ctx.fillText("CATEGORY BREAKDOWN", 40, 250);
+  ctx.fillText("CATEGORY BREAKDOWN", 40, 246);
+
+  ctx.fillStyle = "#86efac99";
+  ctx.font = "12px 'Segoe UI', sans-serif";
+  ctx.fillText(`Items tracked: ${totalItemsCount.toLocaleString()}`, 40, 262);
 
   const categories = [
     "Pets", "Armor", "Rod Parts", "Supercharges",
@@ -246,7 +254,7 @@ async function generateSummaryImage() {
   ];
 
   const startX = 40;
-  const startY = 268;
+  const startY = 274;
   const catPillW = 240;
   const catPillH = 42;
   const gapX = 20;
@@ -280,7 +288,7 @@ async function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText(`Generated: ${dateDisplay}`, width - 40, height - 28);
+  ctx.fillText(`Generated: ${dateDisplay}`, width - 40, height - 20);
   ctx.textAlign = "left";
 
   const safeNick = nick.toLowerCase().replace(/[^a-z0-9_-]/gi, '_');

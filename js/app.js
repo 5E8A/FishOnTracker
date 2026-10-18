@@ -1,5 +1,6 @@
 // Global State
 let userInventory = JSON.parse(localStorage.getItem("fishon_inventory") || "[]");
+let userCashBalance = parseFloat(localStorage.getItem("user_cash_balance")) || 0;
 let activeCategory = "Pets";
 let searchQuery = "";
 let inventorySearchQuery = "";
@@ -88,6 +89,11 @@ if (invSearchEl) {
 initTabs();
 initDropdowns();
 switchView();
+
+if (typeof initCashInputUI === "function") {
+  initCashInputUI();
+}
+
 renderInventory();
 updateMainProfileBanner();
 

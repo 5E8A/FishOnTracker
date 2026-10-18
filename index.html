@@ -23,7 +23,7 @@
       <div class="header-badges">
         <div class="version-badge" onclick="openChangelogModal()" title="Click to view release notes">
           <span class="dot"></span>
-          <span>v1.1.0 • Changelog</span>
+          <span>v1.1.1 • Changelog</span>
         </div>
         <a class="version-badge price-badge" onclick="openPriceChangesModal()">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -63,10 +63,18 @@
         </div>
       </div>
 
-      <!-- Center Net Worth Display -->
+    <!-- Center Net Worth Display + Cash Input -->
       <div class="networth-center-body">
         <div class="networth-label">TOTAL NET WORTH</div>
         <div class="networth-value" id="totalNetWorth">$0</div>
+
+        <div class="cash-input-wrapper">
+          <span class="cash-label">CASH / BALANCE:</span>
+          <div class="cash-field">
+            <span class="cash-symbol">$</span>
+            <input type="text" id="userCashInput" placeholder="0" oninput="onCashInputChange()" title="Enter your in-game balance">
+          </div>
+        </div>
       </div>
 
       <!-- Category Breakdown Pills -->
