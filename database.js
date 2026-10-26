@@ -57,25 +57,80 @@ const ARMOR_SHARDS_CUMULATIVE = {
   "Mythical": 416
 };
 
-// Dynamic Infusion Recipes (1 Capsule + 4 Shards)
+// Dynamic Infusion Recipes (1 Capsule + 4 Shards/Essences)
 const INFUSION_RECIPES = {
   none: { name: "None", capsuleId: null, shardId: null, shardCount: 0 },
   albino: { name: "Albino Infusion", capsuleId: "infusion_capsule", shardId: "albino_shard", shardCount: 4 },
   melanistic: { name: "Melanistic Infusion", capsuleId: "infusion_capsule", shardId: "melanistic_shard", shardCount: 4 },
-  trophy: { name: "Trophy Infusion", capsuleId: "infusion_capsule", shardId: "trophy_shard", shardCount: 4 }
+  trophy: { name: "Trophy Infusion", capsuleId: "infusion_capsule", shardId: "trophy_shard", shardCount: 4 },
+  blessed: { name: "Wizard's Blessed Infusion", capsuleId: "infusion_capsule", shardId: "wizards_purifying_essence", shardCount: 4 },
+  sicly: { name: "Wizard's Sicly Infusion", capsuleId: "infusion_capsule", shardId: "wizards_vile_concoction", shardCount: 4 }
 };
+
+// Dynamic Pet Item Recipes
+const PET_ITEM_RECIPES = {
+  ivory_amulet: [
+    { shardId: "albino_shard", count: 9 }
+  ],
+  wades_amulet: [
+    { shardId: "trophy_shard", count: 1 },
+    { shardId: "melanistic_shard", count: 4 },
+    { shardId: "albino_shard", count: 4 }
+  ],
+  midas_amulet: [
+    { shardId: "trophy_shard", count: 9 }
+  ],
+  onyx_amulet: [
+    { shardId: "melanistic_shard", count: 9 }
+  ],
+  fabled_amulet: [
+    { shardId: "fabled_shard", count: 5 }
+  ],
+  bigfoots_necklace: [
+    { shardId: "bigfoot_tooth", count: 5 }
+  ],
+  bigfoots_amulet: [
+    { shardId: "fabled_shard", count: 1 },
+    { shardId: "bigfoot_fur", count: 8 }
+  ],
+  moon_amulet: [
+    { shardId: "fabled_shard", count: 1 },
+    { shardId: "rougarou_claw", count: 8 }
+  ],
+  cryptid_amulet: [
+    { shardId: "fabled_shard", count: 2 },
+    { shardId: "silver_scale", count: 7 }
+  ],
+  titans_graceful_necklace: [
+    { shardId: "fabled_shard", count: 1 },
+    { shardId: "titans_fang", count: 8 }
+  ]
+};
+
+// Helper to dynamically calculate Pet Item price from recipe
+function getPetItemCraftedPrice(itemId, fallbackPrice) {
+  const recipe = PET_ITEM_RECIPES[itemId];
+  if (!recipe) return fallbackPrice;
+
+  return recipe.reduce((total, ingredient) => {
+    return total + (getItemPriceFromDB(ingredient.shardId, 0) * ingredient.count);
+  }, 0);
+}
 
 // Standard Items Database
 const ITEMS_DB = [
-  // Pet Items
+  // Pet Items (Prospecting stays fixed, others dynamically crafted)
   { id: "prospecting_amulet", name: "Prospecting Amulet", category: "Pet Items", price: 100000 },
-  { id: "ivory_amulet", name: "Ivory Amulet", category: "Pet Items", price: 900000 },
-  { id: "onyx_amulet", name: "Onyx Amulet", category: "Pet Items", price: 1800000 },
-  { id: "midas_amulet", name: "Midas Amulet", category: "Pet Items", price: 9000000 },
-  { id: "fabled_amulet", name: "Fabled Amulet", category: "Pet Items", price: 6000000 },
-  { id: "bigfoots_necklace", name: "BigFoot's Necklace", category: "Pet Items", price: 2250000 },
-  { id: "bigfoots_amulet", name: "BigFoot's Amulet", category: "Pet Items", price: 4300000 },
-  { id: "wades_amulet", name: "Wade's Amulet", category: "Pet Items", price: 2200000 },
+  { id: "ivory_amulet", name: "Ivory Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("ivory_amulet", 810000); } },
+  { id: "onyx_amulet", name: "Onyx Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("onyx_amulet", 1620000); } },
+  { id: "midas_amulet", name: "Midas Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("midas_amulet", 8100000); } },
+  { id: "fabled_amulet", name: "Fabled Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("fabled_amulet", 6000000); } },
+  { id: "bigfoots_necklace", name: "BigFoot's Necklace", category: "Pet Items", get price() { return getPetItemCraftedPrice("bigfoots_necklace", 2250000); } },
+  { id: "bigfoots_amulet", name: "BigFoot's Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("bigfoots_amulet", 4000000); } },
+  { id: "wades_amulet", name: "Wade's Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("wades_amulet", 1980000); } },
+  { id: "moon_amulet", name: "Moon Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("moon_amulet", 5200000); } },
+  { id: "cryptid_amulet", name: "Cryptid Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("cryptid_amulet", 7300000); } },
+  { id: "titans_graceful_necklace", name: "Titan's Graceful Necklace", category: "Pet Items", get price() { return getPetItemCraftedPrice("titans_graceful_necklace", 6000000); } },
 
   // Crafting Components
   { id: "albino_shard", name: "Albino Shard", category: "Crafting Components", price: 90000 },
@@ -86,6 +141,11 @@ const ITEMS_DB = [
   { id: "bigfoot_fur", name: "Bigfoot Fur", category: "Crafting Components", price: 350000 },
   { id: "lightning_in_a_bottle", name: "Lightning in a Bottle", category: "Crafting Components", price: 90000 },
   { id: "infusion_capsule", name: "Infusion Capsule", category: "Crafting Components", price: 350000 },
+  { id: "rougarou_claw", name: "Rougarou Claw", category: "Crafting Components", price: 500000 },
+  { id: "silver_scale", name: "Silver Scale", category: "Crafting Components", price: 700000 },
+  { id: "titans_fang", name: "Titan's Fang", category: "Crafting Components", price: 600000 },
+  { id: "wizards_purifying_essence", name: "Wizard's Purifying Essence", category: "Crafting Components", price: 400000 },
+  { id: "wizards_vile_concoction", name: "Wizard's Vile Concoction", category: "Crafting Components", price: 400000 },
   { id: "subtropical_shard", name: "Subtropical Shard", category: "Crafting Components", price: 5000 },
   { id: "subarctic_shard", name: "Subarctic Shard", category: "Crafting Components", price: 6000 },
   { id: "semi_arid_shard", name: "Semi-Arid Shard", category: "Crafting Components", price: 7000 },
@@ -115,6 +175,7 @@ const ITEMS_DB = [
   { id: "advanced_bait_package_epic", name: "Advanced Bait Package (Epic)", category: "Consumables", price: 45000 },
   { id: "advanced_bait_package_legendary", name: "Advanced Bait Package (Legendary)", category: "Consumables", price: 170000 },
   { id: "advanced_bait_package_mythical", name: "Advanced Bait Package (Mythical)", category: "Consumables", price: 450000 },
+  { id: "rougarou_blood", name: "Rougarou Blood", category: "Consumables", price: 100000 },
 
   // Baits — Common
   { id: "grass_shrimp", name: "Grass Shrimp", category: "Baits", price: 200 },
@@ -218,7 +279,6 @@ const ITEMS_DB = [
   { id: "spinnerbait_lime", name: "Spinnerbait (Lime)", category: "Baits", price: 2500 },
   { id: "popper_volcano", name: "Popper (Volcano)", category: "Baits", price: 5000 },
   { id: "deep_diving_crankbait_pink_chrome", name: "Deep Diving Crankbait (Pink Chrome)", category: "Baits", price: 4500 },
-
 
   // Baits — Mythical
   { id: "marlin_lure_blue_green", name: "Marlin Lure (Blue Green)", category: "Baits", price: 15000 },

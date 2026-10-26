@@ -217,7 +217,7 @@ async function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.1.1", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.1.2", width - 40, 48);
   ctx.textAlign = "left";
 
   ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";

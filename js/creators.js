@@ -79,7 +79,6 @@ function switchView() {
   if (superchargeCard) superchargeCard.style.display = (activeCategory === "Supercharges") ? "flex" : "none";
 
   if (isCustomCreator) {
-    // Ukrywamy pole wyszukiwania oraz siatkę dla kreatorów
     if (searchWrapper) searchWrapper.style.display = "none";
     if (grid) grid.style.display = "none";
 
@@ -88,7 +87,6 @@ function switchView() {
     if (activeCategory === "Rod Parts") updateRodLivePreview();
     if (activeCategory === "Supercharges") updateSuperchargeLivePreview();
   } else {
-    // Pokazujemy wyszukiwarkę i siatkę dla zwykłych przedmiotów
     if (searchWrapper) searchWrapper.style.display = "flex";
     if (grid) grid.style.display = "grid";
     renderGrid();
@@ -134,8 +132,11 @@ function addCustomPet() {
     if (specialStat === "scale") tagStr = " [100% Scale]";
   }
 
+  const speciesKey = species.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const rarityKey = rarity.toLowerCase();
+
   userInventory.push({
-    id: `pet_${species.toLowerCase().replace(/[^a-z0-9]/g, '_')}_${rarity.toLowerCase()}_${rating}`,
+    id: `pet_${speciesKey}_${rarityKey}_${rating}_${specialStat}`,
     isCustomItem: true,
     customType: "pet",
     species,
@@ -172,6 +173,8 @@ function addCustomArmor() {
   if (infusion === "albino") infStr = " [Albino Infusion]";
   if (infusion === "melanistic") infStr = " [Melanistic Infusion]";
   if (infusion === "trophy") infStr = " [Trophy Infusion]";
+  if (infusion === "blessed") infStr = " [Wizard's Blessed Infusion]";
+  if (infusion === "sicly") infStr = " [Wizard's Sicly Infusion]";
 
   const climateKey = climate.toLowerCase().replace(/[^a-z0-9]/g, '_');
   const pieceKey = piece.toLowerCase();
@@ -279,8 +282,8 @@ function addCustomRodPart() {
     name += ` [${tech}]`;
   }
 
-  const modelKey = model.toLowerCase().replace(/[^a-z0-9]/g, '_');
-  const techKey = tech.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const modelKey = model.toLowerCase().replace(/[\u0027'`’]/g, '_').replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_');
+  const techKey = tech.toLowerCase().replace(/[\u0027'`’]/g, '_').replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_');
   const typeKey = type.toLowerCase();
 
   userInventory.push({
@@ -297,6 +300,7 @@ function addCustomRodPart() {
 
   renderInventory();
 }
+
 function updateSuperchargeLivePreview() {
   const cEl = document.getElementById("superchargeClimate");
   const rEl = document.getElementById("superchargeRarity");

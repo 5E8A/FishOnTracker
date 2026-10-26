@@ -1,5 +1,12 @@
 // changelog.js
 const CHANGELOG_DATA = [
+                  {
+    version: "v1.1.2",
+    date: "Official Release",
+    changes: [
+      "Added all new items from Halloween Update to the database",
+    ]
+  },
                 {
     version: "v1.1.1",
     date: "Official Release",
