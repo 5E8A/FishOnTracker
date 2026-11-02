@@ -94,6 +94,7 @@ function renderInventory() {
 
   let itemsTotalWorth = 0;
   let unknownItemsCount = 0;
+  const unknownList = [];
   const categoryTotals = {};
 
   const enriched = userInventory.map((entry, originalIndex) => {
@@ -112,25 +113,33 @@ function renderInventory() {
         isUnknown = true;
       }
     }
-
     if (isUnknown) {
       unknownItemsCount++;
+      unknownList.push({ name, qty: entry.qty });
     }
 
     const price = resolveItemPrice(entry);
     const subtotal = price * entry.qty;
     itemsTotalWorth += subtotal;
-    categoryTotals[category] = (categoryTotals[category] || 0) + subtotal;
+    const totalCategory = category === "Supercharges" ? "Consumables" : category;
+    categoryTotals[totalCategory] = (categoryTotals[totalCategory] || 0) + subtotal;
 
     return { originalIndex, name, category, price, qty: entry.qty, subtotal, isUnknown, rating: entry.rating, customType: entry.customType, infusion: entry.infusion };
   });
 
-  if (unknownAlert && unknownCountEl) {
-    if (unknownItemsCount > 0) {
-      unknownCountEl.textContent = unknownItemsCount;
-      unknownAlert.style.display = "flex";
+  if (unknownAlert) {
+    unknownAlert.style.display = "none";
+  }
+
+  const noticeEl = document.getElementById("unknownItemsNotice");
+  if (noticeEl) {
+    if (unknownList.length > 0) {
+      const listStr = unknownList.map(u => `${u.name} x${u.qty}`).join(", ");
+      noticeEl.innerHTML = `<span style="font-weight: 700; color: #f87171;">⚠️ Unrecognized items (${unknownList.length}):</span> <span style="margin-left: 6px;">${listStr}</span>`;
+      noticeEl.style.display = "block";
     } else {
-      unknownAlert.style.display = "none";
+      noticeEl.style.display = "none";
+      noticeEl.innerHTML = "";
     }
   }
 
@@ -225,7 +234,7 @@ function renderInventory() {
   const breakdownContainer = document.getElementById("categoryBreakdown");
   if (breakdownContainer) {
     breakdownContainer.innerHTML = "";
-    const allCategories = ["Pets", "Armor", "Rod Parts", "Supercharges", ...new Set(ITEMS_DB.map(i => i.category))].filter(cat => cat !== "Fish");
+    const allCategories = ["Pets", "Armor", "Rod Parts", ...new Set(ITEMS_DB.map(i => i.category))].filter(cat => cat !== "Fish" && cat !== "Supercharges" && cat !== "Unknown" && cat !== "undefined");
 
     allCategories.forEach(cat => {
       const amount = categoryTotals[cat] || 0;
@@ -405,7 +414,7 @@ function processInventoryImport(importedData) {
       name: "Cash Balance",
       sampleEntry: { name: "Cash Balance" },
       qtyChange: 0,
-      qtyText: "Cash",
+      qtyText: "",
       valChange: cashDiff
     });
   }
@@ -450,7 +459,7 @@ function processInventoryImport(importedData) {
 
 if (isLegacyFormat) {
       profileChangesHtml = `
-        <div class="diff-summary-card" style="margin-bottom: 12px; display: block; padding: 14px 18px;">
+        <div class="diff-summary-card" style="margin-bottom: 6px; display: block; padding: 12px 18px;">
           <div style="font-weight: 700; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
             Legacy File Format (v1.0)
           </div>
@@ -461,11 +470,11 @@ if (isLegacyFormat) {
       `;
     } else if (hasNickChange || hasLevelChange) {
       profileChangesHtml = `
-        <div class="diff-summary-card" style="margin-bottom: 12px; display: block; padding: 14px 18px;">
-          <div style="font-weight: 700; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+        <div class="diff-summary-card" style="margin-bottom: 6px; display: block; padding: 12px 18px;">
+          <div style="font-weight: 700; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
             Profile Info Updates
           </div>
-          <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; align-items: center;">
+          <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; align-items: center; justify-content: center;">
             ${hasNickChange ? `
               <div>
                 <span style="color: var(--text-muted);">Nickname:</span>
@@ -492,7 +501,7 @@ if (isLegacyFormat) {
       }).join(", ");
 
       unknownAlertHtml = `
-        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 0.85rem;">
+        <div style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; padding: 10px; margin-bottom: 6px; font-size: 0.85rem;">
           <div style="font-weight: 700; color: #f87171; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
             ⚠️ Unrecognized Items (${unknownItemsFound.length})
           </div>
@@ -520,7 +529,7 @@ if (isLegacyFormat) {
           <div class="diff-item-row">
             <div class="diff-item-title">
               <span>${formattedTitle}</span>
-              <span class="diff-qty-badge ${qtyClass}">(${ch.qtyText})</span>
+              ${ch.qtyText ? `<span class="diff-qty-badge ${qtyClass}">(${ch.qtyText})</span>` : ''}
             </div>
             <span class="diff-value ${valClass}">
               ${sign}${formatMoney(ch.valChange)}
@@ -530,8 +539,8 @@ if (isLegacyFormat) {
       }).join("");
     }
 
-    contentEl.innerHTML = `
-      ${profileChangesHtml}
+      contentEl.innerHTML = `
+      <div style="text-align: center; margin-bottom: 6px;">${profileChangesHtml}</div>
       ${unknownAlertHtml}
 
       <div class="diff-summary-card">
@@ -562,8 +571,7 @@ if (isLegacyFormat) {
   openImportDiffModal();
 }
 
-function importInventory(event) {
-  const file = event?.target?.files?.[0];
+function handleImportFile(file) {
   if (!file) return;
 
   const reader = new FileReader();
@@ -576,6 +584,11 @@ function importInventory(event) {
     }
   };
   reader.readAsText(file);
+}
+
+function importInventory(event) {
+  const file = event?.target?.files?.[0];
+  handleImportFile(file);
   if (event.target && event.target.value !== undefined) {
     event.target.value = "";
   }
@@ -645,4 +658,196 @@ function confirmImportDiffModal() {
   }
   const modal = document.getElementById("importDiffModal");
   if (modal) modal.style.display = "none";
+}
+
+// --- Analytics / Detailed Breakdown ---
+function openAnalyticsModal() {
+  const modal = document.getElementById("analyticsModal");
+  if (modal) {
+    try {
+      renderAnalytics();
+    } catch (err) {
+      console.error("renderAnalytics error:", err);
+      const contentEl = document.getElementById("analyticsContent");
+      if (contentEl) contentEl.innerHTML = `<div style="color:#f87171;padding:12px;">Error: ${String(err && err.message ? err.message : err)}</div>`;
+    }
+    modal.style.display = "flex";
+  }
+}
+
+function closeAnalyticsModal(event) {
+  if (!event || event.target === document.getElementById("analyticsModal") || event.target.classList.contains('modal-close-btn')) {
+    const modal = document.getElementById("analyticsModal");
+    if (modal) modal.style.display = "none";
+  }
+}
+
+function renderAnalytics() {
+  const contentEl = document.getElementById("analyticsContent");
+  if (!contentEl) return;
+
+  let itemsTotalWorth = 0;
+  let totalQty = 0;
+  const categoryTotals = {};
+  const categoryBest = {}; // category -> entry with max subtotal
+  const uniqueCount = userInventory.length;
+
+  userInventory.forEach(entry => {
+    let name = entry.name;
+    let category = entry.category;
+    if (!entry.isCustomItem) {
+      const dbItem = ITEMS_DB.find(i => i.id === entry.id);
+      if (dbItem) {
+        name = dbItem.name;
+        category = dbItem.category;
+      }
+    }
+    if (category === "Supercharges") category = "Consumables";
+    const price = resolveItemPrice(entry);
+    const subtotal = price * entry.qty;
+    itemsTotalWorth += subtotal;
+    totalQty += entry.qty;
+    categoryTotals[category] = (categoryTotals[category] || 0) + subtotal;
+
+    if (!categoryBest[category] || subtotal > categoryBest[category].subtotal) {
+      categoryBest[category] = { name, category, qty: entry.qty, price, subtotal };
+    }
+  });
+
+  const totalWithCash = itemsTotalWorth + userCashBalance;
+
+  // Percentage breakdown
+  const sortedCats = Object.keys(categoryTotals).filter(cat => cat !== "Fish" && cat !== "Unknown" && cat !== "undefined").sort((a, b) => categoryTotals[b] - categoryTotals[a]);
+  const shownTotal = sortedCats.reduce((s, c) => s + (categoryTotals[c] || 0), 0);
+  let pctHtml = sortedCats.map(cat => {
+    const amt = categoryTotals[cat];
+    const pct = shownTotal > 0 ? (amt / shownTotal * 100) : 0;
+    return `
+      <div style="margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+          <span style="color: var(--text-main); font-weight: 600;">${cat}</span>
+          <span style="color: var(--text-muted);">${formatMoney(amt)} <span style="color: var(--accent);">(${pct.toFixed(1)}%)</span></span>
+        </div>
+        <div style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden;">
+          <div style="height: 100%; width: ${pct.toFixed(1)}%; background: var(--accent); border-radius: 3px; transition: width 0.3s;"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  if (sortedCats.length === 0) {
+    pctHtml = `<div style="text-align: center; color: var(--text-muted); padding: 12px;">No items in inventory.</div>`;
+  }
+
+  // Most valuable item per category (exclude Fish)
+  const bestCats = Object.keys(categoryBest)
+    .filter(cat => cat !== "Fish" && cat !== "Unknown" && cat !== "undefined")
+    .sort((a, b) => categoryBest[b].subtotal - categoryBest[a].subtotal);
+  let bestHtml = bestCats.map(cat => {
+    const b = categoryBest[cat];
+    if (!b) return "";
+    let coloredName;
+    try {
+      coloredName = formatItemNameWithColoredRating(b);
+    } catch (e) {
+      coloredName = (b.name || cat).replace(/</g, "&lt;");
+    }
+    return `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; font-size: 0.85rem;">
+        <span style="color: var(--text-main); font-weight: 600; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><span style="color: var(--accent); font-size: 0.72rem; font-weight: 700; margin-right: 6px;">${cat}</span>${coloredName}${b.qty > 1 ? ` <span style="color: var(--text-muted); font-weight: 400;">(x${b.qty})</span>` : ''}</span>
+        ${b.qty > 1 ? `<span style="color: var(--text-muted); font-size: 0.78rem; margin: 0 10px;">${formatMoney(b.price)} / each</span>` : ''}
+        <span style="color: var(--success); font-weight: 700;">${formatMoney(b.subtotal)}</span>
+      </div>
+    `;
+  }).join("");
+
+  if (bestCats.length === 0 || !bestHtml.trim()) {
+    bestHtml = `<div style="text-align: center; color: var(--text-muted); padding: 12px;">No items in inventory.</div>`;
+  }
+
+  contentEl.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px;">
+      <div class="diff-summary-item" style="background: rgba(15,23,18,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center;">
+        <span class="diff-summary-label">Unique Items</span>
+        <span class="diff-summary-value" style="font-size: 1.05rem;">${uniqueCount}</span>
+      </div>
+      <div class="diff-summary-item" style="background: rgba(15,23,18,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center;">
+        <span class="diff-summary-label">Total Qty</span>
+        <span class="diff-summary-value" style="font-size: 1.05rem;">${totalQty.toLocaleString()}</span>
+      </div>
+      <div class="diff-summary-item" style="background: rgba(15,23,18,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center;">
+        <span class="diff-summary-label">Items Value</span>
+        <span class="diff-summary-value" style="font-size: 1.05rem; color: var(--text-muted);">${formatMoney(itemsTotalWorth)}</span>
+      </div>
+      <div class="diff-summary-item" style="background: rgba(15,23,18,0.6); border: 1px solid var(--border); border-radius: 10px; padding: 10px 8px; text-align: center;">
+        <span class="diff-summary-label">Cash</span>
+        <span class="diff-summary-value" style="font-size: 1.05rem; color: var(--text-muted);">${formatMoney(userCashBalance)}</span>
+      </div>
+    </div>
+    <div style="background: linear-gradient(135deg, rgba(74,222,128,0.12), rgba(15,23,18,0.6)); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 16px; text-align: center; margin-bottom: 10px;">
+      <span class="diff-summary-label" style="color: var(--accent);">Net Worth</span>
+      <div class="diff-summary-value" style="color: var(--success); font-size: 1.5rem;">${formatMoney(totalWithCash)}</div>
+    </div>
+
+    <div style="font-weight: 700; font-size: 0.8rem; margin-bottom: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+      Percentage Breakdown
+    </div>
+    <div style="margin-bottom: 10px;">
+      ${pctHtml}
+    </div>
+
+    <div style="font-weight: 700; font-size: 0.8rem; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+      Most Valuable Item per Category
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      ${bestHtml}
+    </div>
+  `;
+}
+
+function exportInventoryCSV() {
+  if (userInventory.length === 0 && userCashBalance === 0) {
+    alert("Inventory and cash balance are empty.");
+    return;
+  }
+
+  const rows = [];
+  rows.push(['Name', 'Category', 'Qty', 'Unit Price', 'Subtotal'].join(','));
+
+  userInventory.forEach(entry => {
+    let name = entry.name;
+    let category = entry.category;
+    if (!entry.isCustomItem) {
+      const dbItem = ITEMS_DB.find(i => i.id === entry.id);
+      if (dbItem) {
+        name = dbItem.name;
+        category = dbItem.category;
+      }
+    }
+    const price = resolveItemPrice(entry);
+    const subtotal = price * entry.qty;
+    const safeName = `"${String(name || '').replace(/"/g, '""')}"`;
+    const safeCat = `"${String(category || '').replace(/"/g, '""')}"`;
+    rows.push([safeName, safeCat, entry.qty, price, subtotal].join(','));
+  });
+
+  const itemsTotal = userInventory.reduce((s, e) => s + resolveItemPrice(e) * e.qty, 0);
+  rows.push(['"TOTAL (items)"', '""', '', '', itemsTotal].join(','));
+  rows.push(['"Cash Balance"', '""', '', '', userCashBalance].join(','));
+  rows.push(['"NET WORTH"', '""', '', '', itemsTotal + userCashBalance].join(','));
+
+  const csv = rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  const now = new Date();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const yyyy = now.getFullYear();
+  link.download = `fot_inventory_${mm}-${dd}-${yyyy}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }

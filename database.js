@@ -307,6 +307,8 @@ const ITEMS_DB = [
   { id: "mallard_duck_pet", name: "Mallard Duck Pet", category: "Skins", price: 25000000 },
   { id: "vacation_koala_pet", name: "Vacation Koala Pet", category: "Skins", price: 25000000 },
   { id: "cherry_blossom_pet_trail", name: "Cherry Blossom Pet Trail", category: "Skins", price: 13000000 },
+  { id: "witchs_brew_pet_trail", name: "Witch's Brew Pet Trail", category: "Skins", price: 13000000 },
+  { id: "werewolf_pet", name: "Werewolf Pet", category: "Skins", price: 25000000 },
 
   // Fish (Mod import only, zero value)
   { id: "normal_fish", name: "Normal Fish", category: "Fish", price: 0 },

@@ -1,5 +1,16 @@
 // changelog.js
 const CHANGELOG_DATA = [
+                    {
+    version: "v1.1.3",
+    date: "Official Release",
+    changes: [
+      "Added Detailed Breakdown modal with percentage distribution and most valuable item per category",
+      "Added drag & drop JSON import on the existing Import button",
+      "Folded Supercharges into Consumables for net worth calculations",
+      "Added CSV export in the Detailed Breakdown modal",
+      "Added Werewolf Pet and Witch's Brew Pet Trail to the database",
+    ]
+  },
                   {
     version: "v1.1.2",
     date: "Official Release",

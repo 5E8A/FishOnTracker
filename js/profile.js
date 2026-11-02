@@ -119,6 +119,7 @@ async function generateSummaryImage() {
       const dbItem = ITEMS_DB.find(i => i.id === entry.id);
       if (dbItem) category = dbItem.category;
     }
+    if (category === "Supercharges") category = "Consumables";
 
     const price = resolveItemPrice(entry);
     const sub = price * entry.qty;
@@ -135,7 +136,7 @@ async function generateSummaryImage() {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   const width = 850;
-  const height = 490;
+  const height = 420;
   canvas.width = width;
   canvas.height = height;
 
@@ -217,7 +218,7 @@ async function generateSummaryImage() {
   ctx.textAlign = "right";
   ctx.fillStyle = "#86efac66";
   ctx.font = "12px 'Segoe UI', sans-serif";
-  ctx.fillText("FishOnTracker • v1.1.2", width - 40, 48);
+  ctx.fillText("FishOnTracker • v1.1.3", width - 40, 48);
   ctx.textAlign = "left";
 
   ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
@@ -249,20 +250,20 @@ async function generateSummaryImage() {
   ctx.fillText(`Items tracked: ${totalItemsCount.toLocaleString()}`, 40, 262);
 
   const categories = [
-    "Pets", "Armor", "Rod Parts", "Supercharges",
+    "Pets", "Armor", "Rod Parts",
     "Pet Items", "Crafting Components", "Consumables", "Baits", "Skins"
   ];
 
   const startX = 40;
   const startY = 274;
-  const catPillW = 240;
+  const catPillW = 180;
   const catPillH = 42;
-  const gapX = 20;
+  const gapX = 15;
   const gapY = 10;
 
   categories.forEach((cat, idx) => {
-    const col = idx % 3;
-    const row = Math.floor(idx / 3);
+    const col = idx % 4;
+    const row = Math.floor(idx / 4);
     const x = startX + col * (catPillW + gapX);
     const y = startY + row * (catPillH + gapY);
     const val = categoryTotals[cat] || 0;

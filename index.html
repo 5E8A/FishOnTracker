@@ -23,7 +23,7 @@
       <div class="header-badges">
         <div class="version-badge" onclick="openChangelogModal()" title="Click to view release notes">
           <span class="dot"></span>
-          <span>v1.1.2 • Changelog</span>
+          <span>v1.1.3 • Changelog</span>
         </div>
         <a class="version-badge price-badge" onclick="openPriceChangesModal()">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -62,6 +62,16 @@
           <span id="mainPlayerCrew" class="player-crew-text">Click to edit profile</span>
         </div>
       </div>
+
+      <!-- Details Button Top-Right -->
+      <button class="breakdown-details-btn" onclick="openAnalyticsModal()" title="Detailed breakdown">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        Details
+      </button>
 
     <!-- Center Net Worth Display + Cash Input -->
       <div class="networth-center-body">
@@ -300,7 +310,7 @@
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
               Export
             </button>
-            <button class="btn-action" onclick="document.getElementById('fileInput').click()">
+            <button class="btn-action" id="btnImportFile" onclick="document.getElementById('fileInput').click()">
               <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Import
             </button>
@@ -320,6 +330,9 @@
           <button class="btn-clear" onclick="clearInventory()">Clear Inventory</button>
         </div>
       </div>
+
+      <!-- Unknown Items Notice -->
+      <div id="unknownItemsNotice" style="display: none; text-align: left; margin-bottom: 0; padding: 8px 12px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 0; color: #fca5a5; font-size: 0.82rem;"></div>
 
       <!-- Inventory Table -->
       <div class="table-container">
@@ -449,6 +462,35 @@
         <div style="padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
           <button class="btn-clear" onclick="cancelImportDiffModal()">Cancel</button>
           <button class="btn-add-custom" id="btn-apply-import" onclick="confirmImportDiffModal()">Apply Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics / Detailed Breakdown Modal -->
+    <div id="analyticsModal" class="modal-backdrop" onclick="closeAnalyticsModal(event)">
+      <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 720px;">
+        <div class="modal-header">
+          <h3>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+            Detailed Breakdown
+          </h3>
+          <button class="modal-close-btn" onclick="closeAnalyticsModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="analyticsContent"></div>
+        <div style="padding: 12px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; align-items: center; gap: 8px;">
+          <button class="btn-clear" onclick="closeAnalyticsModal()">Close</button>
+          <button class="btn-add-custom" style="padding: 6px 12px; font-size: 0.8rem;" onclick="exportInventoryCSV()">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Export CSV
+          </button>
         </div>
       </div>
     </div>

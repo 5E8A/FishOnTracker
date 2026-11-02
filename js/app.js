@@ -65,8 +65,40 @@ window.addEventListener("keydown", (e) => {
       pendingInventory = null;
       diffModal.style.display = "none";
     }
+    const analyticsModal = document.getElementById("analyticsModal");
+    if (analyticsModal) analyticsModal.style.display = "none";
   }
 });
+
+// Drag & Drop import on the existing Import button
+(function initImportDragDrop() {
+  const btn = document.getElementById("btnImportFile");
+  if (!btn) return;
+
+  btn.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    btn.classList.add("drag-over");
+  });
+
+  btn.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    btn.classList.remove("drag-over");
+  });
+
+  btn.addEventListener("drop", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    btn.classList.remove("drag-over");
+    const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file && (file.name.toLowerCase().endsWith(".json") || file.name.toLowerCase().endsWith(".txt"))) {
+      if (typeof handleImportFile === "function") {
+        handleImportFile(file);
+      }
+    }
+  });
+})();
 
 // Event Listeners for Inputs
 const searchEl = document.getElementById("searchInput");
