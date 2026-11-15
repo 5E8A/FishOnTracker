@@ -1,8 +1,19 @@
 // changelog.js
 const CHANGELOG_DATA = [
+                      {
+    version: "v1.1.4",
+    date: "11/15/2026",
+    changes: [
+      "Share Card is now Profile Card and located in main profile modal",
+      "Added Profile Card preview",
+      "Added category icons to Profile Card",
+      "Added level coloring option for level 300+ players",
+      "Added colors for Wizard's Blessed & Sicly Infusions",
+    ]
+  },
                     {
     version: "v1.1.3",
-    date: "Official Release",
+    date: "11/02/2026",
     changes: [
       "Added Detailed Breakdown modal with percentage distribution and most valuable item per category",
       "Added drag & drop JSON import on the existing Import button",
@@ -13,14 +24,14 @@ const CHANGELOG_DATA = [
   },
                   {
     version: "v1.1.2",
-    date: "Official Release",
+    date: "10/26/2026",
     changes: [
       "Added all new items from Halloween Update to the database",
     ]
   },
                 {
     version: "v1.1.1",
-    date: "Official Release",
+    date: "10/18/2026",
     changes: [
       "Exports now include Username, Level, and Cash Balance",
       "Added In-Game Cash Tracking",
@@ -32,7 +43,7 @@ const CHANGELOG_DATA = [
   },
               {
     version: "v1.1.0",
-    date: "Official Release",
+    date: "10/13/2026",
     changes: [
       "Redesigned website layout and navigation",
       "Added interactive Inventory Sync Preview with live Net Worth comparison",
@@ -49,7 +60,7 @@ const CHANGELOG_DATA = [
   },
             {
     version: "v1.0.7",
-    date: "Official Release",
+    date: "10/05/2026",
     changes: [
       "Added minecraft head for Share Cards",
       "Added dynamic level badge colors to Share Cards",
@@ -61,14 +72,14 @@ const CHANGELOG_DATA = [
   },
           {
     version: "v1.0.6",
-    date: "Official Release",
+    date: "10/03/2026",
     changes: [
       "Added missing Pet Skins to the database",
     ]
   },
         {
     version: "v1.0.5",
-    date: "Official Release",
+    date: "09/28/2026",
     changes: [
       "Added Supercharges to the database",
       "Added support for standalone Rod Blank and Gear System Tech",
@@ -76,19 +87,9 @@ const CHANGELOG_DATA = [
       "Added event Baits to the database",
     ]
   },
-      {
-    version: "v1.0.4",
-    date: "Official Release",
-    changes: [
-      "Added Quick Paste button for JSON file, for future FishOnTracker Mod",
-      "Added missing Poles and Reels to the database",
-      "Added missing database item indicators",
-      "Changed a few internal item IDs"
-    ]
-  },
     {
     version: "v1.0.4",
-    date: "Official Release",
+    date: "09/25/2026",
     changes: [
       "Added Quick Paste button for JSON file, for future FishOnTracker Mod",
       "Added missing Poles and Reels to the database",
@@ -98,9 +99,9 @@ const CHANGELOG_DATA = [
   },
   {
     version: "v1.0.3",
-    date: "Official Release",
+    date: "09/20/2026",
     changes: [
-      "Added price change tracking — view historical price adjustments",
+      "Added price change tracking - view historical price adjustments",
       "Added generation date stamp to Share Cards",
       "Updated file naming to Share Cards and Inventory JSON files",
       "Added quick-access GitHub repository link to header navigation"
@@ -108,30 +109,30 @@ const CHANGELOG_DATA = [
   },
   {
     version: "v1.0.2",
-    date: "Official Release",
+    date: "09/19/2026",
     changes: [
-      "Dynamic price synchronization — custom Pets, Armor, and Rod Parts",
+      "Dynamic price synchronization for custom Pets, Armor, and Rod Parts",
       "Added missing Baits to the database",
       "Simplified display labels for Armor climates, Armor rarities, and Pet rarities"
     ]
   },
   {
     version: "v1.0.1",
-    date: "Official Release",
+    date: "09/18/2026",
     changes: [
       "Fixed Rod Blank and Gear System prices"
     ]
   },
   {
     version: "v1.0.0",
-    date: "Official Release",
+    date: "09/18/2026",
     changes: [
-      "Total Net Worth Calculation — track the full value of your account in real time with automatic category breakdowns.",
-      "Custom Equipment Builders — advanced calculators for Pets (ratings & bonus stats), Armor sets (climate shards & infusions), and Rod Parts (tech upgrades).",
-      "Comprehensive Item Catalog — built-in database of official FishOnMC items, crafting materials, baits, and consumables.",
-      "Shareable Profile Cards — export high-resolution PNG summary cards featuring your IGN, level, crew tag, and wealth distribution.",
-      "Interactive Inventory Table — easily adjust quantities (+/- controls, stack shortcuts) and sort items by value, quantity, or name.",
-      "Local Storage & Portability — your data saves automatically in your browser with full JSON export/import support for manual backups."
+      "Total Net Worth Calculation - track the full value of your account in real time with automatic category breakdowns.",
+      "Custom Equipment Builders - advanced calculators for Pets (ratings & bonus stats), Armor sets (climate shards & infusions), and Rod Parts (tech upgrades).",
+      "Comprehensive Item Catalog - built-in database of official FishOnMC items, crafting materials, baits, and consumables.",
+      "Shareable Profile Cards - export high-resolution PNG summary cards featuring your IGN, level, crew tag, and wealth distribution.",
+      "Interactive Inventory Table - easily adjust quantities (+/- controls, stack shortcuts) and sort items by value, quantity, or name.",
+      "Local Storage & Portability - your data saves automatically in your browser with full JSON export/import support for manual backups."
     ]
   }
 ];

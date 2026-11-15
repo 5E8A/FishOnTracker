@@ -30,6 +30,25 @@ function openShareModal() {
   if (savedLevel !== null) {
     document.getElementById("shareLevel").value = savedLevel;
   }
+
+  const levelColorSelect = document.getElementById("shareLevelColor");
+  if (levelColorSelect) {
+    levelColorSelect.innerHTML = "";
+    const savedColor = localStorage.getItem("fot_share_level_color") || "#E9E7EC";
+    LEVEL_COLOR_OPTIONS.forEach(opt => {
+      const option = document.createElement("option");
+      option.value = opt.hex;
+      option.textContent = opt.name;
+      if (opt.hex.toLowerCase() === savedColor.toLowerCase()) option.selected = true;
+      levelColorSelect.appendChild(option);
+    });
+  }
+
+  const levelColorGroup = document.getElementById("levelColorGroup");
+  if (levelColorGroup) {
+    const lvl = parseInt(savedLevel || "0", 10) || 0;
+    levelColorGroup.style.display = lvl >= 300 ? "flex" : "none";
+  }
   if (savedCrew !== null) {
     document.getElementById("shareCrew").value = savedCrew;
   }
@@ -67,6 +86,8 @@ window.addEventListener("keydown", (e) => {
     }
     const analyticsModal = document.getElementById("analyticsModal");
     if (analyticsModal) analyticsModal.style.display = "none";
+    const profileCardModal = document.getElementById("profileCardModal");
+    if (profileCardModal) profileCardModal.style.display = "none";
   }
 });
 
@@ -115,6 +136,22 @@ if (invSearchEl) {
     inventorySearchQuery = e.target.value;
     renderInventory();
   });
+}
+
+const shareLevelEl = document.getElementById("shareLevel");
+if (shareLevelEl) {
+  shareLevelEl.addEventListener("input", () => {
+    const group = document.getElementById("levelColorGroup");
+    if (group) {
+      const lvl = parseInt(shareLevelEl.value || "0", 10) || 0;
+      group.style.display = lvl >= 300 ? "flex" : "none";
+    }
+  });
+}
+
+// Preload profile card category icons
+if (typeof preloadCategoryIcons === "function") {
+  preloadCategoryIcons();
 }
 
 // App Initialization

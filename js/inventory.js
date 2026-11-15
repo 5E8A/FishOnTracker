@@ -135,7 +135,7 @@ function renderInventory() {
   if (noticeEl) {
     if (unknownList.length > 0) {
       const listStr = unknownList.map(u => `${u.name} x${u.qty}`).join(", ");
-      noticeEl.innerHTML = `<span style="font-weight: 700; color: #f87171;">⚠️ Unrecognized items (${unknownList.length}):</span> <span style="margin-left: 6px;">${listStr}</span>`;
+      noticeEl.innerHTML = `<span style="font-weight: 700; color: #f87171; display: inline-flex; align-items: center; gap: 4px;"><span style="color: #f87171;">\u2715</span> Unrecognized items (${unknownList.length}):</span> <span style="margin-left: 6px;">${listStr}</span>`;
       noticeEl.style.display = "block";
     } else {
       noticeEl.style.display = "none";
@@ -197,7 +197,7 @@ function renderInventory() {
   if (tbody) {
     filteredInventory.forEach(entry => {
       const warningBadge = entry.isUnknown
-        ? `<span class="warning-icon" title="Item ID '${entry.name}' is missing in database!">⚠️</span>`
+        ? `<span class="warning-icon" title="Item ID '${entry.name}' is missing in database!" style="color: #f87171;">\u2715</span>`
         : "";
 
       const formattedName = formatItemNameWithColoredRating(entry);

@@ -120,7 +120,7 @@ function getPetItemCraftedPrice(itemId, fallbackPrice) {
 // Standard Items Database
 const ITEMS_DB = [
   // Pet Items (Prospecting stays fixed, others dynamically crafted)
-  { id: "prospecting_amulet", name: "Prospecting Amulet", category: "Pet Items", price: 100000 },
+  { id: "prospecting_amulet", name: "Prospecting Amulet", category: "Pet Items", price: 90000 },
   { id: "ivory_amulet", name: "Ivory Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("ivory_amulet", 810000); } },
   { id: "onyx_amulet", name: "Onyx Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("onyx_amulet", 1620000); } },
   { id: "midas_amulet", name: "Midas Amulet", category: "Pet Items", get price() { return getPetItemCraftedPrice("midas_amulet", 8100000); } },
@@ -136,7 +136,7 @@ const ITEMS_DB = [
   { id: "albino_shard", name: "Albino Shard", category: "Crafting Components", price: 90000 },
   { id: "melanistic_shard", name: "Melanistic Shard", category: "Crafting Components", price: 180000 },
   { id: "trophy_shard", name: "Trophy Shard", category: "Crafting Components", price: 900000 },
-  { id: "fabled_shard", name: "Fabled Shard", category: "Crafting Components", price: 1200000 },
+  { id: "fabled_shard", name: "Fabled Shard", category: "Crafting Components", price: 2500000 },
   { id: "bigfoot_tooth", name: "Bigfoot Tooth", category: "Crafting Components", price: 450000 },
   { id: "bigfoot_fur", name: "Bigfoot Fur", category: "Crafting Components", price: 350000 },
   { id: "lightning_in_a_bottle", name: "Lightning in a Bottle", category: "Crafting Components", price: 90000 },
@@ -218,8 +218,8 @@ const ITEMS_DB = [
   { id: "roostertail_fire_tiger", name: "Roostertail (Fire Tiger)", category: "Baits", price: 1000 },
   { id: "roostertail_white_chartreuse", name: "Roostertail (White Chartreuse)", category: "Baits", price: 1000 },
   { id: "roostertail_bubblegum", name: "Roostertail (Bubblegum)", category: "Baits", price: 1000 },
-  { id: "crankbait_tiger_craw", name: "Crankbait (Tiger Craw)", category: "Baits", price: 1000 },
-  { id: "crankbait_smokin", name: "Crankbait (Smokin' Shad)", category: "Baits", price: 1000 },
+  { id: "crankbait_tiger_craw", name: "Crankbait (Tiger Craw)", category: "Baits", price: 900 },
+  { id: "crankbait_smokin", name: "Crankbait (Smokin' Shad)", category: "Baits", price: 900 },
 
   // Baits — Epic
   { id: "cut_bream", name: "Cut Bream", category: "Baits", price: 1500 },

@@ -257,6 +257,8 @@ function getInfusionColor(infusionType) {
   if (inf.includes("albino")) return "#E3C6E2";
   if (inf.includes("melanistic")) return "#5A5E62";
   if (inf.includes("trophy")) return "#D4C010";
+  if (inf.includes("blessed")) return "#F2A541";
+  if (inf.includes("sicly")) return "#9B6BD6";
   return null;
 }
 
