@@ -7,7 +7,7 @@ const CHANGELOG_DATA = [
       "Share Card is now Profile Card and located in main profile modal",
       "Added Profile Card preview",
       "Added category icons to Profile Card",
-      "Added level coloring option for level 300+ players",
+      "Added level coloring option for level 300+",
       "Added colors for Wizard's Blessed & Sicly Infusions",
     ]
   },
